@@ -1,0 +1,19 @@
+{
+	"name": "upfront",
+	"version": "0.1.0",
+	"private": true,
+	"scripts": {
+		"build": "npx hardhat compile",
+		"deploy-testnet": "npx hardhat run ./scripts/YOUR_DEPLOY_SCRIPT --network ETH_GOERLI",
+		"deploy": "npx hardhat run ./scripts/YOUR_DEPLOY_SCRIPT --network ETH_MAINNET",
+		"node": "npx hardhat node",
+		"deploy-local": "npx hardhat run ./scripts/YOUR_DEPLOY_SCRIPT --network localhost"
+	},
+	"dependencies": {
+		"dotenv": "^16.0.3"
+	},
+	"devDependencies": {
+		"@nomicfoundation/hardhat-toolbox": "^2.0.1",
+		"hardhat": "^2.12.6"
+	}
+}
