@@ -112,3 +112,7 @@ dist
 .tern-port
 
 templates/evm/core/pages/api
+
+/backend/cache
+/backend/artifacts
+/backend/typechain-types
