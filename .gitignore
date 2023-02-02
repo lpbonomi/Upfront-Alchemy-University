@@ -49,6 +49,9 @@ jspm_packages/
 # TypeScript v1 declaration files
 typings/
 
+# TypeScript NextJS types
+next-env.d.ts
+
 # TypeScript cache
 *.tsbuildinfo
 
