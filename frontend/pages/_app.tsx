@@ -4,6 +4,7 @@ import "@rainbow-me/rainbowkit/styles.css";
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { configureChains, createClient, WagmiConfig } from "wagmi";
 import {
+  localhost,
   mainnet,
   polygon,
   optimism,
@@ -20,6 +21,7 @@ import { Layout } from "../components/layout/Layout";
 
 const { chains, provider } = configureChains(
   [
+    localhost,
     mainnet,
     goerli,
     polygon,

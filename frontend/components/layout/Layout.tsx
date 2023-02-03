@@ -1,5 +1,5 @@
 import { Fragment, type ReactElement, useState } from "react";
-import { Dialog, Menu, Transition } from "@headlessui/react";
+import { Dialog, Transition } from "@headlessui/react";
 import {
   Bars3BottomLeftIcon,
   BellIcon,
@@ -11,22 +11,16 @@ import {
   UsersIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import Image from "next/image";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 const navigation = [
   { name: "Dashboard", href: "#", icon: HomeIcon, current: true },
-  { name: "Team", href: "#", icon: UsersIcon, current: false },
+  { name: "Friends", href: "friends", icon: UsersIcon, current: false },
   { name: "Projects", href: "#", icon: FolderIcon, current: false },
   { name: "Calendar", href: "#", icon: CalendarIcon, current: false },
   { name: "Documents", href: "#", icon: InboxIcon, current: false },
   { name: "Reports", href: "#", icon: ChartBarIcon, current: false },
-];
-const userNavigation = [
-  { name: "Your Profile", href: "#" },
-  { name: "Settings", href: "#" },
-  { name: "Sign out", href: "#" },
 ];
 
 function classNames(...classes: string[]): string {
@@ -38,7 +32,7 @@ function Layout({ children }: { children: ReactElement }): ReactElement {
 
   return (
     <>
-      <div>
+      <div className="h-screen">
         <Transition.Root show={sidebarOpen} as={Fragment}>
           <Dialog
             as="div"
@@ -167,7 +161,7 @@ function Layout({ children }: { children: ReactElement }): ReactElement {
             </div>
           </div>
         </div>
-        <div className="flex flex-1 flex-col md:pl-64">
+        <div className="h-full flex flex-1 flex-col md:pl-64">
           <div className="sticky top-0 z-10 flex h-16 flex-shrink-0 bg-white shadow">
             <button
               type="button"
@@ -190,19 +184,10 @@ function Layout({ children }: { children: ReactElement }): ReactElement {
             </div>
           </div>
 
-          <main>
-            <div className="py-6">
-              <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
-                <h1 className="text-2xl font-semibold text-gray-900">
-                  Dashboard
-                </h1>
-              </div>
-              <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
-                {/* Replace with your content */}
-                <div className="py-4">
-                  <div className="h-96 rounded-lg border-4 border-dashed border-gray-200" />
-                </div>
-                {/* /End replace */}
+          <main className="h-full">
+            <div className="h-full py-6">
+              <div className="h-full mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
+                {children}
               </div>
             </div>
           </main>
