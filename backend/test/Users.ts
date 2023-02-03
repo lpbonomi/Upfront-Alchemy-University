@@ -8,11 +8,8 @@ describe("Create User", function () {
     const users = await Users.deploy();
     await users.deployed();
 
-    await users.createUser("John Doe", "johndoe", {
-      value: 100,
-    });
+    await users.createUser("johndoe", { value: 100 });
 
-    await expect(await users.getName()).to.equal("John Doe");
     await expect(await users.getUsername()).to.equal("johndoe");
     await expect(await users.getBalance()).to.equal(100);
     await expect(await users.getFriends()).to.have.lengthOf(0);
@@ -23,19 +20,9 @@ describe("Create User", function () {
     const users = await Users.deploy();
     await users.deployed();
 
-    await expect(users.createUser("John Doe", "")).to.be.revertedWith(
+    await expect(users.createUser("")).to.be.revertedWith(
       "Username cannot be empty"
     );
-  });
-
-  it("Should not create a new user with empty name", async function () {
-    const Users = await ethers.getContractFactory("Users");
-    const users = await Users.deploy();
-    await users.deployed();
-
-    await expect(
-      users.createUser("", "johndoe", { value: 100 })
-    ).to.be.revertedWith("Name cannot be empty");
   });
 
   it("Should not create a user with balance 0", async function () {
@@ -43,7 +30,7 @@ describe("Create User", function () {
     const users = await Users.deploy();
     await users.deployed();
 
-    await expect(users.createUser("John Doe", "johndoe")).to.be.revertedWith(
+    await expect(users.createUser("johndoe")).to.be.revertedWith(
       "Balance cannot be 0"
     );
   });
@@ -53,22 +40,25 @@ describe("Create User", function () {
     const users = await Users.deploy();
     await users.deployed();
 
-    await users.createUser("John Doe", "johndoe", { value: 100 });
-    await expect(users.createUser("John Doe", "johndoe")).to.be.revertedWith(
-      "Username already taken"
-    );
-  });
+    await users.createUser("johndoe", { value: 100 });
 
-  it("Should not let the user create a new user twice", async function () {
-    const Users = await ethers.getContractFactory("Users");
-    const users = await Users.deploy();
-    await users.deployed();
+    const otherUser = (await ethers.getSigners())[1];
 
-    await users.createUser("John Doe", "johndoe", { value: 100 });
     await expect(
-      users.createUser("John Doe 2", "johndoe 2", { value: 100 })
-    ).to.be.revertedWith("User already created");
+      users.connect(otherUser).createUser("johndoe", { value: 100 })
+    ).to.be.revertedWith("Username already taken");
   });
+});
+
+it("Should not let the user create a new user twice", async function () {
+  const Users = await ethers.getContractFactory("Users");
+  const users = await Users.deploy();
+  await users.deployed();
+
+  await users.createUser("johndoe", { value: 100 });
+  await expect(users.createUser("johndoe 2")).to.be.revertedWith(
+    "User already created"
+  );
 });
 
 describe("Only Registered User", function () {
@@ -77,7 +67,6 @@ describe("Only Registered User", function () {
     const users = await Users.deploy();
     await users.deployed();
 
-    await expect(users.getName()).to.be.revertedWith("User not registered");
     await expect(users.getUsername()).to.be.revertedWith("User not registered");
     await expect(users.getBalance()).to.be.revertedWith("User not registered");
     await expect(
@@ -100,10 +89,10 @@ describe("Transfer", function () {
     const users = await Users.deploy();
     await users.deployed();
 
-    await users.createUser("John Doe", "johndoe", { value: 100 });
+    await users.createUser("johndoe", { value: 100 });
 
     const otherSigner = (await ethers.getSigners())[1];
-    await users.connect(otherSigner).createUser("William Owen", "williamowen", {
+    await users.connect(otherSigner).createUser("williamowen", {
       value: 100,
     });
     await users.transfer(otherSigner.address, 50);
@@ -116,10 +105,10 @@ describe("Transfer", function () {
     const users = await Users.deploy();
     await users.deployed();
 
-    await users.createUser("John Doe", "johndoe", { value: 100 });
+    await users.createUser("johndoe", { value: 100 });
 
     const otherSigner = (await ethers.getSigners())[1];
-    await users.connect(otherSigner).createUser("William Owen", "williamowen", {
+    await users.connect(otherSigner).createUser("williamowen", {
       value: 100,
     });
     await expect(users.transfer(otherSigner.address, 101)).to.be.revertedWith(
@@ -134,12 +123,12 @@ describe("Add Friend", function () {
     const users = await Users.deploy();
     await users.deployed();
 
-    await users.createUser("John Doe", "johndoe", { value: 100 });
+    await users.createUser("johndoe", { value: 100 });
 
     const user = (await ethers.getSigners())[0];
     const friend = (await ethers.getSigners())[1];
 
-    await users.connect(friend).createUser("William Owen", "williamowen", {
+    await users.connect(friend).createUser("williamowen", {
       value: 100,
     });
 
@@ -153,7 +142,12 @@ describe("Add Friend", function () {
     await users.connect(friend).acceptFriendRequest(user.address);
 
     await expect(await users.getFriends()).to.have.lengthOf(1);
-    await expect(await users.getFriends()).to.include(friend.address);
+    await expect((await users.getFriends())[0].friendAddress).to.equal(
+      friend.address
+    );
+    await expect((await users.getFriends())[0].username).to.equal(
+      "williamowen"
+    );
   });
 
   it("Should not add a friend if user is empty", async function () {
@@ -161,11 +155,11 @@ describe("Add Friend", function () {
     const users = await Users.deploy();
     await users.deployed();
 
-    await users.createUser("John Doe", "johndoe", { value: 100 });
+    await users.createUser("johndoe", { value: 100 });
 
     const friend = (await ethers.getSigners())[1];
 
-    await users.connect(friend).createUser("William Owen", "williamowen", {
+    await users.connect(friend).createUser("williamowen", {
       value: 100,
     });
 
@@ -179,12 +173,12 @@ describe("Add Friend", function () {
     const users = await Users.deploy();
     await users.deployed();
 
-    await users.createUser("John Doe", "johndoe", { value: 100 });
+    await users.createUser("johndoe", { value: 100 });
 
     const user = (await ethers.getSigners())[0];
     const friend = (await ethers.getSigners())[1];
 
-    await users.connect(friend).createUser("William Owen", "williamowen", {
+    await users.connect(friend).createUser("williamowen", {
       value: 100,
     });
 
@@ -201,7 +195,7 @@ describe("Add Friend", function () {
     const users = await Users.deploy();
     await users.deployed();
 
-    await users.createUser("John Doe", "johndoe", { value: 100 });
+    await users.createUser("johndoe", { value: 100 });
 
     const user = (await ethers.getSigners())[0];
 
@@ -211,29 +205,29 @@ describe("Add Friend", function () {
   });
 
   // todo: fix this test
-  it("Should not add more than 10 friends", async function () {
+  it("Should not add more than 24 friends", async function () {
     const Users = await ethers.getContractFactory("Users");
     const users = await Users.deploy();
     await users.deployed();
 
-    await users.createUser("John Doe", "johndoe", { value: 100 });
+    await users.createUser("johndoe", { value: 100 });
 
     const signers = await ethers.getSigners();
 
-    for (let i = 1; i <= 10; i++) {
-      await users.connect(signers[i]).createUser(String(i), String(i), {
+    for (let i = 1; i <= 24; i++) {
+      await users.connect(signers[i]).createUser(String(i), {
         value: 100,
       });
       await users.sendFriendRequest(signers[i].address);
       await users.connect(signers[i]).acceptFriendRequest(signers[0].address);
     }
 
-    await users.connect(signers[11]).createUser(String(11), String(11), {
+    await users.connect(signers[25]).createUser(String(25), {
       value: 100,
     });
 
     await expect(
-      users.sendFriendRequest(signers[11].address)
-    ).to.be.revertedWith("Cannot add more than 10 friends");
+      users.sendFriendRequest(signers[25].address)
+    ).to.be.revertedWith("Cannot add more than 24 friends");
   });
 });

@@ -5,11 +5,15 @@ contract Users {
 
     struct User {
         string username;
-        string name;
         uint balance;
         uint friendCount;
         mapping (address => bool) friendRequests;
         mapping (uint => address) friends;
+    }
+
+    struct Friend {
+        address friendAddress;
+        string username;
     }
 
     mapping (address => User) public users;
@@ -18,18 +22,16 @@ contract Users {
     event FriendRequest(address from, address to);
 
     modifier onlyRegisteredUser() {
-        require(bytes(users[msg.sender].name).length > 0, "User not registered");
+        require(bytes(users[msg.sender].username).length > 0, "User not registered");
         _;
     }
 
-    function createUser(string memory name, string memory username) external payable {
+    function createUser(string memory username) external payable {
         require(bytes(username).length > 0, "Username cannot be empty");
+        require(bytes(users[msg.sender].username).length == 0, "User already created");
         require(usernames[username] == address(0), "Username already taken");
-        require(bytes(name).length > 0, "Name cannot be empty");
         require(msg.value > 0, "Balance cannot be 0");
-        require(bytes(users[msg.sender].name).length == 0, "User already created");
 
-        users[msg.sender].name = name;
         users[msg.sender].username = username;
         users[msg.sender].balance = msg.value;
         users[msg.sender].friendCount = 0;
@@ -37,10 +39,6 @@ contract Users {
         usernames[username] = msg.sender;
     }
     
-    function getName() public view onlyRegisteredUser returns (string memory) {
-        return users[msg.sender].name;
-    }
-
     function getUsername() public view onlyRegisteredUser returns (string memory) {
         return users[msg.sender].username;
     }
@@ -69,9 +67,9 @@ contract Users {
     function sendFriendRequest(address friend) external onlyRegisteredUser {
         require(friend != address(0), "Friend cannot be empty");
         require(friend != msg.sender, "Cannot add self as friend");
-        require(bytes(users[friend].name).length > 0, "Friend not registered");
+        require(bytes(users[friend].username).length > 0, "Friend not registered");
         require(users[msg.sender].friendRequests[friend] == false, "Friend request already sent");
-        require(users[msg.sender].friendCount < 10, "Cannot add more than 10 friends");
+        require(users[msg.sender].friendCount < 24, "Cannot add more than 24 friends");
         for (uint i = 0; i < users[msg.sender].friendCount; i++) {
             require(users[msg.sender].friends[i] != friend, "Friend already added");
         }
@@ -83,7 +81,7 @@ contract Users {
 
     function acceptFriendRequest(address friend) public {
         require(users[friend].friendRequests[msg.sender] == true, "Friend request not found");
-        require(users[msg.sender].friendCount < 10, "Cannot add more than 10 friends");
+        require(users[msg.sender].friendCount < 24, "Cannot add more than 24 friends");
         for (uint i = 0; i < users[msg.sender].friendCount; i++) {
             require(users[msg.sender].friends[i] != friend, "Friend already added");
         }
@@ -97,11 +95,14 @@ contract Users {
         users[friend].friendCount++;
     }
 
-
-    function getFriends() public view onlyRegisteredUser returns (address[] memory) {
-        address[] memory friends = new address[](users[msg.sender].friendCount);
+    function getFriends() public view onlyRegisteredUser returns (Friend[] memory) {
+        address[] memory addresses = new address[](users[msg.sender].friendCount);
+        string[] memory friendsUsernames = new string[](users[msg.sender].friendCount);
+        Friend[] memory friends = new Friend[](users[msg.sender].friendCount);
         for (uint i = 0; i < users[msg.sender].friendCount; i++) {
-            friends[i] = users[msg.sender].friends[i];
+            addresses[i] = users[msg.sender].friends[i];
+            friendsUsernames[i] = users[users[msg.sender].friends[i]].username;
+            friends[i] = Friend({friendAddress: addresses[i], username: friendsUsernames[i]});
         }
         return friends;
     }
