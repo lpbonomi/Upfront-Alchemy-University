@@ -16,7 +16,7 @@ import {
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
 import { type ReactElement } from "react";
-import MainLayout from "../layout/mainLayout";
+import { Layout } from "../components/layout/Layout";
 
 const { chains, provider } = configureChains(
   [
@@ -58,9 +58,9 @@ function MyApp({
         initialChain={goerli}
         chains={chains}
       >
-        <MainLayout>
+        <Layout>
           <Component {...pageProps} />
-        </MainLayout>
+        </Layout>
       </RainbowKitProvider>
     </WagmiConfig>
   );
