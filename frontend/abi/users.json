@@ -105,9 +105,9 @@
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "friend",
-        "type": "address"
+        "internalType": "string",
+        "name": "username",
+        "type": "string"
       }
     ],
     "name": "sendFriendRequest",

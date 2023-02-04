@@ -64,19 +64,19 @@ contract Users {
         users[to].balance += amount;
     }
 
-    function sendFriendRequest(address friend) external onlyRegisteredUser {
-        require(friend != address(0), "Friend cannot be empty");
-        require(friend != msg.sender, "Cannot add self as friend");
-        require(bytes(users[friend].username).length > 0, "Friend not registered");
-        require(users[msg.sender].friendRequests[friend] == false, "Friend request already sent");
+    function sendFriendRequest(string memory username) external onlyRegisteredUser {
+        require(bytes(username).length > 0, "Username cannot be empty");
+        require(keccak256(abi.encodePacked(username)) != keccak256(abi.encodePacked(users[msg.sender].username)), "Cannot add self as friend");
+        require(usernames[username] != address(0), "Friend not registered");
+        require(users[msg.sender].friendRequests[usernames[username]] == false, "Friend request already sent");
         require(users[msg.sender].friendCount < 24, "Cannot add more than 24 friends");
         for (uint i = 0; i < users[msg.sender].friendCount; i++) {
-            require(users[msg.sender].friends[i] != friend, "Friend already added");
+            require(users[msg.sender].friends[i] != usernames[username], "Friend already added");
         }
 
-        users[msg.sender].friendRequests[friend] = true;
+        users[msg.sender].friendRequests[usernames[username]] = true;
 
-        emit FriendRequest(msg.sender, friend);
+        emit FriendRequest(msg.sender, usernames[username]);
     }
 
     function acceptFriendRequest(address friend) public {
