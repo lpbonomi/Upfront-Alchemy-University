@@ -26,6 +26,10 @@ contract Users {
         _;
     }
 
+    function isRegistered() public view returns (bool) {
+        return bytes(users[msg.sender].username).length > 0;
+    }
+
     function createUser(string memory username) external payable {
         require(bytes(username).length > 0, "Username cannot be empty");
         require(bytes(users[msg.sender].username).length == 0, "User already created");

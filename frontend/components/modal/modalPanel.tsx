@@ -6,22 +6,21 @@ import {
 } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { UserPlusIcon } from "@heroicons/react/24/outline";
-import { ModalForm } from "./form";
 
-function FriendRequestModal({
-  openFriendRequestModal,
-  setOpenFriendRequestModal,
+function ModalPanel({
+  title,
+  openModal,
+  setOpenModal,
+  children,
 }: {
-  openFriendRequestModal: boolean;
-  setOpenFriendRequestModal: Dispatch<SetStateAction<boolean>>;
+  title: string;
+  openModal: boolean;
+  setOpenModal: Dispatch<SetStateAction<boolean>>;
+  children: ReactElement;
 }): ReactElement {
   return (
-    <Transition.Root show={openFriendRequestModal} as={Fragment}>
-      <Dialog
-        as="div"
-        className="relative z-10"
-        onClose={setOpenFriendRequestModal}
-      >
+    <Transition.Root show={openModal} as={Fragment}>
+      <Dialog as="div" className="relative z-10" onClose={setOpenModal}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -58,9 +57,9 @@ function FriendRequestModal({
                       as="h3"
                       className="text-lg font-medium leading-6 text-gray-900"
                     >
-                      Add a Friend!
+                      {title}
                     </Dialog.Title>
-                    <ModalForm />
+                    {children}
                   </div>
                 </div>
               </Dialog.Panel>
@@ -72,4 +71,4 @@ function FriendRequestModal({
   );
 }
 
-export { FriendRequestModal };
+export { ModalPanel };

@@ -1,5 +1,6 @@
-import { Fragment, type ReactElement, useState } from "react";
+import { Fragment, type ReactElement, useState, useEffect } from "react";
 import { Dialog, Transition } from "@headlessui/react";
+
 import {
   Bars3BottomLeftIcon,
   BellIcon,
@@ -14,6 +15,15 @@ import {
 import Image from "next/image";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 
+import { useContractRead } from "wagmi";
+
+import { RegisterModal } from "../register";
+import usersABI from "@/abi/users.json";
+
+function classNames(...classes: string[]): string {
+  return classes.filter(Boolean).join(" ");
+}
+
 const navigation = [
   { name: "Dashboard", href: "#", icon: HomeIcon, current: true },
   { name: "Friends", href: "friends", icon: UsersIcon, current: false },
@@ -23,12 +33,26 @@ const navigation = [
   { name: "Reports", href: "#", icon: ChartBarIcon, current: false },
 ];
 
-function classNames(...classes: string[]): string {
-  return classes.filter(Boolean).join(" ");
-}
-
 function Layout({ children }: { children: ReactElement }): ReactElement {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [openRegisterModal, setOpenRegisterModal] =
+    useState<Readonly<boolean>>(false);
+
+  const {
+    data: isRegistered,
+    isError,
+    isLoading,
+  } = useContractRead({
+    address: process.env.NEXT_PUBLIC_USERS_CONTRACT_ADDRESS,
+    abi: usersABI,
+    functionName: "isRegistered",
+  }) as { data: boolean; isError: boolean; isLoading: boolean };
+
+  useEffect(() => {
+    if (!isLoading) {
+      setOpenRegisterModal(!isRegistered);
+    }
+  }, [isRegistered, isLoading]);
 
   return (
     <>
@@ -195,6 +219,10 @@ function Layout({ children }: { children: ReactElement }): ReactElement {
           </main>
         </div>
       </div>
+      <RegisterModal
+        openRegisterModal={openRegisterModal}
+        setOpenRegisterModal={setOpenRegisterModal}
+      />
     </>
   );
 }

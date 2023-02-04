@@ -1,8 +1,8 @@
-import "@styles/globals.css";
+import "@/styles/globals.css";
 import "@rainbow-me/rainbowkit/styles.css";
+import { configureChains, createClient, WagmiConfig } from "wagmi";
 
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
-import { configureChains, createClient, WagmiConfig } from "wagmi";
 import {
   localhost,
   mainnet,
@@ -18,7 +18,7 @@ import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
 import { type ReactElement } from "react";
 import { type AppProps } from "next/app";
-import { Layout } from "@/components/layout/Layout";
+import { Layout } from "@/components/layout";
 
 const { chains, provider } = configureChains(
   [

@@ -6,7 +6,6 @@ import usersABI from "@/abi/users.json";
 
 function ModalForm(): ReactElement {
   const [friendsUersname, setFriendsUsername] = useState<Readonly<string>>("");
-  const { chain, chains } = useNetwork();
 
   const { config, error } = usePrepareContractWrite({
     address: process.env.NEXT_PUBLIC_USERS_CONTRACT_ADDRESS,

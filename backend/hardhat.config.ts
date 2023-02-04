@@ -7,7 +7,9 @@ import "@nomiclabs/hardhat-ethers";
 module.exports = {
   solidity: "0.8.17",
   networks: {
-    hardhat: {},
+    hardhat: {
+      chainId: 1337,
+    },
     ETH_MAINNET: {
       accounts: [`${process.env.PRIVATE_KEY}`],
       url: `https://eth-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
