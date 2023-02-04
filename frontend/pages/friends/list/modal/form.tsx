@@ -2,7 +2,7 @@ import { useState, type FormEvent, type ReactElement } from "react";
 
 import { useContractWrite, usePrepareContractWrite, useNetwork } from "wagmi";
 
-import usersABI from "../../../../abi/users.json";
+import usersABI from "@/abi/users.json";
 
 function ModalForm(): ReactElement {
   const [friendsUersname, setFriendsUsername] = useState<Readonly<string>>("");

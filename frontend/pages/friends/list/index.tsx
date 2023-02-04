@@ -1,6 +1,6 @@
 import { type ReactElement } from "react";
-import { type IFriend } from "../../../types/friends/friend";
 import { Avatar } from "./avatar";
+import { type IFriend } from "@/types/friends/friend";
 
 function FriendList({ friends }: { friends: IFriend[] }): ReactElement {
   return (

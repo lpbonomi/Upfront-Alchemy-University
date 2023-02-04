@@ -1,4 +1,4 @@
-import "../styles/globals.css";
+import "@styles/globals.css";
 import "@rainbow-me/rainbowkit/styles.css";
 
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
@@ -17,7 +17,8 @@ import {
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
 import { type ReactElement } from "react";
-import { Layout } from "../components/layout/Layout";
+import { type AppProps } from "next/app";
+import { Layout } from "@/components/layout/Layout";
 
 const { chains, provider } = configureChains(
   [
@@ -46,13 +47,7 @@ const wagmiClient = createClient({
 });
 
 export { WagmiConfig, RainbowKitProvider };
-function MyApp({
-  Component,
-  pageProps,
-}: {
-  Component: any;
-  pageProps: any;
-}): ReactElement {
+function MyApp({ Component, pageProps }: AppProps): ReactElement {
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider

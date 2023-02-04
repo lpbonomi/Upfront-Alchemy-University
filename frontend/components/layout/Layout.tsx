@@ -89,10 +89,11 @@ function Layout({ children }: { children: ReactElement }): ReactElement {
                   </Transition.Child>
                   <div className="flex flex-shrink-0 items-center px-4">
                     <Image
-                      src="/upfront_logo.png"
+                      src="/images/upfront_logo.png"
                       alt="Your Company"
                       width={300}
                       height={80}
+                      priority
                     />
                   </div>
                   <div className="mt-5 h-0 flex-1 overflow-y-auto">
@@ -131,10 +132,11 @@ function Layout({ children }: { children: ReactElement }): ReactElement {
           <div className="flex flex-grow flex-col overflow-y-auto bg-indigo-700 pt-5">
             <div className="flex flex-shrink-0 items-center px-4">
               <Image
-                src={"/upfront_logo.png"}
+                src="/images/upfront_logo.png"
                 alt="Upfront"
                 width={225}
                 height={100}
+                priority
               />
             </div>
             <div className="mt-5 flex flex-1 flex-col">

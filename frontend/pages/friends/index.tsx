@@ -1,10 +1,10 @@
 import { useEffect, useState, type ReactElement } from "react";
 import { useContractRead } from "wagmi";
-import usersABI from "../../abi/users.json";
-import { type IFriend } from "../../types/friends/friend";
 import { FriendRequestButton } from "./list/friendRequestButton";
 import { Heading } from "./list/heading";
 import { FriendList } from "./list";
+import { type IFriend } from "@/types/friends/friend";
+import usersABI from "@/abi/users.json";
 
 function Friends(): ReactElement {
   const [friends, setFriends] = useState<Array<Readonly<IFriend>>>([]);

@@ -1,5 +1,5 @@
 import { type ReactElement } from "react";
-import { type IFriend } from "../../../types/friends/friend";
+import { type IFriend } from "@/types/friends/friend";
 
 function Avatar({ friend }: { friend: IFriend }): ReactElement {
   function getColorOfInitial(initial: string): string {
