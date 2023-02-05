@@ -4,7 +4,8 @@ import { ModalForm } from "./modalForm";
 import { ModalPanel } from "@/components/modal/modalPanel";
 
 function FriendRequestButton(): ReactElement {
-  const [openFriendRequestModal, setOpenFriendRequestModal] = useState(false);
+  const [openFriendRequestModal, setOpenFriendRequestModal] =
+    useState<Readonly<boolean>>(false);
 
   return (
     <>

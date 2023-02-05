@@ -15,7 +15,7 @@ import {
 import Image from "next/image";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 
-import { useContractRead } from "wagmi";
+import { useContractRead, useAccount } from "wagmi";
 
 import { RegisterModal } from "../register";
 import usersABI from "@/abi/users.json";
@@ -34,9 +34,11 @@ const navigation = [
 ];
 
 function Layout({ children }: { children: ReactElement }): ReactElement {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState<Readonly<boolean>>(false);
   const [openRegisterModal, setOpenRegisterModal] =
     useState<Readonly<boolean>>(false);
+
+  const { address } = useAccount();
 
   const {
     data: isRegistered,
@@ -46,13 +48,16 @@ function Layout({ children }: { children: ReactElement }): ReactElement {
     address: process.env.NEXT_PUBLIC_USERS_CONTRACT_ADDRESS,
     abi: usersABI,
     functionName: "isRegistered",
+    overrides: {
+      from: address,
+    },
   }) as { data: boolean; isError: boolean; isLoading: boolean };
 
   useEffect(() => {
-    if (!isLoading) {
+    if (!isRegistered && !isLoading && !isError) {
       setOpenRegisterModal(!isRegistered);
     }
-  }, [isRegistered, isLoading]);
+  }, [isRegistered, isLoading, isError]);
 
   return (
     <>

@@ -13,6 +13,7 @@ function ModalForm(): ReactElement {
     abi: usersABI,
     functionName: "createUser",
     args: [username],
+    enabled: Boolean(username) && initialDeposit > 0,
     overrides: {
       value: initialDeposit,
     },
@@ -72,7 +73,9 @@ function ModalForm(): ReactElement {
         </div>
         <button
           type="submit"
-          disabled={write == null}
+          disabled={
+            username.length === 0 || initialDeposit === 0 || write == null
+          }
           className="whitespace-nowrap mt-3 inline-flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none"
         >
           Create User
