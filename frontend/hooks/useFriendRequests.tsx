@@ -6,13 +6,12 @@ import {
   useWebSocketProvider,
   useAccount,
 } from "wagmi";
+import { useFriends } from "./useFriends";
 import usersABI from "@/abi/users.json";
 import { type address } from "@/types";
 
-function useNotifications(): {
-  events: Readonly<Array<{ from: address; to: address }>>;
-} {
-  const [events, setEvents] = useState<
+function useFriendRequests(): Readonly<Array<{ from: address; to: address }>> {
+  const [friendRequests, setFriendRequests] = useState<
     Readonly<Array<{ from: address; to: address }>>
   >([]);
 
@@ -20,6 +19,7 @@ function useNotifications(): {
   const provider = useProvider({ chainId: chain?.id });
   const webSocketProvider = useWebSocketProvider({ chainId: chain?.id });
   const { address } = useAccount();
+  const friends = useFriends();
 
   useEffect(() => {
     async function getAllEvents(): Promise<() => void> {
@@ -33,27 +33,31 @@ function useNotifications(): {
         address
       );
       const pastEvents = await contract.queryFilter(eventFilter);
-      setEvents(
-        pastEvents.map((event: any) => ({
-          from: event.args.from,
-          to: event.args.to,
-        }))
-      );
+      const allFriendRequests = pastEvents.map((event: any) => ({
+        from: event.args.from,
+        to: event.args.to,
+      }));
 
-      contract.on(eventFilter, (node, label, owner) => {
-        setEvents((prevEvents) => [
-          ...prevEvents,
-          { from: owner.args.from, to: owner.args.to },
-        ]);
+      contract.on(eventFilter, (_node, _label, owner) => {
+        setFriendRequests(() =>
+          [
+            ...allFriendRequests,
+            { from: owner.args.from, to: owner.args.to },
+          ].filter(
+            (friendRequest) =>
+              friends.find((friend) => friend.address === friendRequest.from) ==
+              null
+          )
+        );
       });
       return () => {
         contract.removeAllListeners();
       };
     }
     void getAllEvents();
-  }, [address, provider, webSocketProvider]);
+  }, [address, friends, provider, webSocketProvider]);
 
-  return { events };
+  return friendRequests;
 }
 
-export { useNotifications };
+export { useFriendRequests };

@@ -8,7 +8,7 @@ function ModalForm(): ReactElement {
   const [username, setUsername] = useState<Readonly<string>>("");
   const [initialDeposit, setInitialDeposit] = useState<Readonly<number>>(0);
 
-  const { config, error } = usePrepareContractWrite({
+  const { config } = usePrepareContractWrite({
     address: process.env.NEXT_PUBLIC_USERS_CONTRACT_ADDRESS,
     abi: usersABI,
     functionName: "createUser",
@@ -18,10 +18,8 @@ function ModalForm(): ReactElement {
       value: initialDeposit,
     },
   });
-  console.log({ config, error });
-  const { data, isLoading, isSuccess, write } = useContractWrite(config);
 
-  console.log({ data, isLoading, isSuccess, write });
+  const { write } = useContractWrite(config);
 
   function handleSubmit(event: FormEvent): void {
     event.preventDefault();
