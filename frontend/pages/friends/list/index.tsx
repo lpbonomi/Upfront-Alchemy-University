@@ -1,5 +1,5 @@
 import { type ReactElement } from "react";
-import { Avatar } from "./avatar";
+import { Friend } from "./friend";
 import { type IFriend } from "@/types/friends/friend";
 
 function FriendList({ friends }: { friends: IFriend[] }): ReactElement {
@@ -10,7 +10,7 @@ function FriendList({ friends }: { friends: IFriend[] }): ReactElement {
     >
       {friends?.map((f) => (
         <li key={f.username}>
-          <Avatar friend={f} />
+          <Friend friend={f} />
         </li>
       ))}
     </ul>

@@ -45,6 +45,19 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "friend",
+        "type": "address"
+      }
+    ],
+    "name": "deleteFriendRequest",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "deposit",
     "outputs": [],

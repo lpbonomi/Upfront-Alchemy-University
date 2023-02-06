@@ -72,8 +72,8 @@ contract Users {
         require(bytes(username).length > 0, "Username cannot be empty");
         require(keccak256(abi.encodePacked(username)) != keccak256(abi.encodePacked(users[msg.sender].username)), "Cannot add self as friend");
         require(usernames[username] != address(0), "Friend not registered");
-        require(users[msg.sender].friendRequests[usernames[username]] == false, "Friend request already sent");
         require(users[msg.sender].friendCount < 24, "Cannot add more than 24 friends");
+        require(users[msg.sender].friendRequests[usernames[username]] == false, "Friend request already sent");
         for (uint i = 0; i < users[msg.sender].friendCount; i++) {
             require(users[msg.sender].friends[i] != usernames[username], "Friend already added");
         }
@@ -97,6 +97,12 @@ contract Users {
 
         users[friend].friends[users[friend].friendCount] = msg.sender;
         users[friend].friendCount++;
+    }
+
+    function deleteFriendRequest(address friend) public {
+        require(users[friend].friendRequests[msg.sender] == true, "Friend request not found");
+
+        users[friend].friendRequests[msg.sender] = false;
     }
 
     function getFriends() public view onlyRegisteredUser returns (Friend[] memory) {

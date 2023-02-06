@@ -3,7 +3,6 @@ import { Dialog, Transition } from "@headlessui/react";
 
 import {
   Bars3BottomLeftIcon,
-  BellIcon,
   CalendarIcon,
   ChartBarIcon,
   FolderIcon,
@@ -18,6 +17,7 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useContractRead, useAccount } from "wagmi";
 
 import { RegisterModal } from "../register";
+import { FriendsRequestsMenu } from "./friendsRequestsMenu";
 import usersABI from "@/abi/users.json";
 
 function classNames(...classes: string[]): string {
@@ -54,10 +54,15 @@ function Layout({ children }: { children: ReactElement }): ReactElement {
   }) as { data: boolean; isError: boolean; isLoading: boolean };
 
   useEffect(() => {
-    if (!isRegistered && !isLoading && !isError) {
+    if (
+      !isRegistered &&
+      !isLoading &&
+      !isError &&
+      openRegisterModal !== !isRegistered
+    ) {
       setOpenRegisterModal(!isRegistered);
     }
-  }, [isRegistered, isLoading, isError]);
+  }, [isRegistered, isLoading, isError, openRegisterModal]);
 
   return (
     <>
@@ -207,9 +212,7 @@ function Layout({ children }: { children: ReactElement }): ReactElement {
             <div className="flex flex-1 justify-between px-8">
               <div className="flex flex-1" />
               <div className="ml-4 flex items-center md:ml-6">
-                <button>
-                  <BellIcon className="h-6 w-6 mr-6" aria-hidden="true" />
-                </button>
+                <FriendsRequestsMenu />
                 <ConnectButton />
               </div>
             </div>
