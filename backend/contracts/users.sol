@@ -73,6 +73,7 @@ contract Users {
         require(keccak256(abi.encodePacked(username)) != keccak256(abi.encodePacked(users[msg.sender].username)), "Cannot add self as friend");
         require(usernames[username] != address(0), "Friend not registered");
         require(users[msg.sender].friendCount < 24, "Cannot add more than 24 friends");
+        require(users[usernames[username]].friendRequests[msg.sender] == false, "Friend request already received");
         require(users[msg.sender].friendRequests[usernames[username]] == false, "Friend request already sent");
         for (uint i = 0; i < users[msg.sender].friendCount; i++) {
             require(users[msg.sender].friends[i] != usernames[username], "Friend already added");
@@ -86,9 +87,6 @@ contract Users {
     function acceptFriendRequest(address friend) public {
         require(users[friend].friendRequests[msg.sender] == true, "Friend request not found");
         require(users[msg.sender].friendCount < 24, "Cannot add more than 24 friends");
-        for (uint i = 0; i < users[msg.sender].friendCount; i++) {
-            require(users[msg.sender].friends[i] != friend, "Friend already added");
-        }
 
         users[msg.sender].friendRequests[friend] = false;
 

@@ -202,6 +202,42 @@ describe("Add Friend", function () {
     );
   });
 
+  it("Should not add a friend if user is not registered", async function () {
+    const Users = await ethers.getContractFactory("Users");
+    const users = await Users.deploy();
+    await users.deployed();
+
+    await users.createUser("johndoe", { value: 100 });
+
+    const user = (await ethers.getSigners())[0];
+
+    await expect(users.sendFriendRequest("williamowen")).to.be.revertedWith(
+      "Friend not registered"
+    );
+  });
+
+  it("Should not add a friend if friend request already received", async function () {
+    const Users = await ethers.getContractFactory("Users");
+    const users = await Users.deploy();
+    await users.deployed();
+
+    await users.createUser("johndoe", { value: 100 });
+
+    const user = (await ethers.getSigners())[0];
+
+    const friend = (await ethers.getSigners())[1];
+
+    await users.connect(friend).createUser("williamowen", {
+      value: 100,
+    });
+
+    await users.connect(friend).sendFriendRequest("johndoe");
+
+    await expect(users.sendFriendRequest("williamowen")).to.be.revertedWith(
+      "Friend request already received"
+    );
+  });
+
   // it("Should not add more than 24 friends", async function () {
   //   const Users = await ethers.getContractFactory("Users");
   //   const users = await Users.deploy();

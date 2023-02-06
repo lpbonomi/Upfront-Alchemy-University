@@ -1,29 +1,11 @@
-import { useEffect, useState, type ReactElement } from "react";
-import { useContractRead, useAccount } from "wagmi";
+import { type ReactElement } from "react";
 import { FriendRequestButton } from "./list/friendRequestButton";
 import { Heading } from "./list/heading";
 import { FriendList } from "./list";
-import { type IFriend } from "@/types/friends/friend";
-import usersABI from "@/abi/users.json";
+import { useFriends } from "@/hooks/useFriends";
 
 function Friends(): ReactElement {
-  const [friends, setFriends] = useState<Array<Readonly<IFriend>>>([]);
-  const { address } = useAccount();
-
-  const { data, isLoading } = useContractRead({
-    address: process.env.NEXT_PUBLIC_USERS_CONTRACT_ADDRESS,
-    abi: usersABI,
-    functionName: "getFriends",
-    overrides: {
-      from: address,
-    },
-  }) as { data: IFriend[]; isError: boolean; isLoading: boolean };
-
-  useEffect(() => {
-    if (!isLoading) {
-      setFriends(data);
-    }
-  }, [data, isLoading]);
+  const friends = useFriends();
 
   return (
     <div className="h-full bg-white">

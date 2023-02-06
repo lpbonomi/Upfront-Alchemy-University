@@ -2,7 +2,11 @@ import { type ReactElement } from "react";
 import { Friend } from "./friend";
 import { type IFriend } from "@/types/friends/friend";
 
-function FriendList({ friends }: { friends: IFriend[] }): ReactElement {
+function FriendList({
+  friends,
+}: {
+  friends: Readonly<IFriend[]>;
+}): ReactElement {
   return (
     <ul
       role="list"
