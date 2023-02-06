@@ -19,7 +19,7 @@ contract Users {
     mapping (address => User) public users;
     mapping (string => address) private usernames;
 
-    event FriendRequest(address from, address to);
+    event FriendRequest(address from, address indexed to);
 
     modifier onlyRegisteredUser() {
         require(bytes(users[msg.sender].username).length > 0, "User not registered");

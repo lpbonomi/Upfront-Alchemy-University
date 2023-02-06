@@ -1,9 +1,11 @@
+import { type address } from "..";
+
 export interface IFriend {
-  address: `0x${string}`;
+  address: address;
   username: string;
 }
 
 export interface IFriendRequestEvent {
-  from: `0x${string}`;
-  to: `0x${string}`;
+  from: address;
+  to: address;
 }
