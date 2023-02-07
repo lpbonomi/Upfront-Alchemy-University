@@ -20,13 +20,31 @@ function Avatar({
     return colors[initial.charCodeAt(0) % colors.length];
   }
 
+  function getTextSize(size: number): string {
+    switch (size) {
+      case 4:
+        return "text-xs";
+      case 6:
+        return "text-sm";
+      case 8:
+        return "text-sm";
+      case 12:
+        return "text-lg";
+      case 16:
+        return "text-2xl";
+      default:
+        return "text-md";
+    }
+  }
+
   const initial = username[0].toUpperCase();
   const colorClass = getColorOfInitial(initial);
+  const textSize = getTextSize(size);
   return (
     <div
-      className={`flex items-center justify-center h-${size} w-${size} rounded-full ${colorClass} text-gray-800 font-bold mx-auto`}
+      className={`flex items-center justify-center h-${size} w-${size} rounded-full ${colorClass} text-gray-800 font-bold`}
     >
-      <p>{initial}</p>
+      <p className={`${textSize}`}>{initial}</p>
     </div>
   );
 }
