@@ -192,7 +192,7 @@ function Layout({ children }: { children: ReactElement }): ReactElement {
             <div className="flex flex-1 justify-between px-8">
               <div className="flex flex-1">
                 <h2 className="pt-4 text-md xs:text-lg font-bold leading text-black sm:truncate sm:text-2xl sm:tracking-tight">
-                  Upfront Balance: 100 ETH
+                  Upfront Balance: {user?.balance?.toString() ?? "?"} eth
                 </h2>
               </div>
               <div className="ml-4 flex items-center md:ml-6">
