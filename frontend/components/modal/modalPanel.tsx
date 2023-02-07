@@ -1,19 +1,21 @@
-import {
+import React, {
   type Dispatch,
   Fragment,
   type SetStateAction,
   type ReactElement,
+  type ElementType,
 } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { UserPlusIcon } from "@heroicons/react/24/outline";
 
 function ModalPanel({
   title,
+  Icon,
   openModal,
   setOpenModal,
   children,
 }: {
   title: string;
+  Icon: ElementType;
   openModal: boolean;
   setOpenModal: Dispatch<SetStateAction<boolean>>;
   children: ReactElement;
@@ -47,7 +49,7 @@ function ModalPanel({
               <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-md sm:p-6">
                 <div>
                   <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
-                    <UserPlusIcon
+                    <Icon
                       className="h-6 w-6 text-green-600"
                       aria-hidden="true"
                     />

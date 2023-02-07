@@ -1,5 +1,6 @@
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { useState, type ReactElement } from "react";
+import { UserPlusIcon } from "@heroicons/react/20/solid";
 import { ModalForm } from "./modalForm";
 import { ModalPanel } from "@/components/modal/modalPanel";
 
@@ -20,6 +21,7 @@ function FriendRequestButton(): ReactElement {
       </button>
       <ModalPanel
         title=" Add a Friend!"
+        Icon={UserPlusIcon}
         openModal={openFriendRequestModal}
         setOpenModal={setOpenFriendRequestModal}
       >
