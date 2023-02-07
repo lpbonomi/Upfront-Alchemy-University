@@ -7,6 +7,7 @@ declare global {
       ALCHEMY_NETWORK: string;
       NEXT_PUBLIC_DEFAULT_CHAIN: "goerli" | "mainnet";
       NEXT_PUBLIC_USERS_CONTRACT_ADDRESS: address;
+      NEXT_PUBLIC_GROUPS_CONTRACT_ADDRESS: address;
     }
   }
 }

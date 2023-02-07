@@ -1,12 +1,12 @@
 import { ethers } from "hardhat";
 
 async function main() {
-  const Users = await ethers.getContractFactory("Users");
-  const users = await Users.deploy();
+  const Groups = await ethers.getContractFactory("Groups");
+  const groups = await Groups.deploy();
 
-  await users.deployed();
+  await groups.deployed();
 
-  console.log(`Deployed! Address: ${users.address}`);
+  console.log(`Deployed groups contract! Address: ${groups.address}`);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

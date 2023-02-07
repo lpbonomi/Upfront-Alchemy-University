@@ -1,7 +1,7 @@
 import { type ReactElement } from "react";
-import { FriendRequestButton } from "./list/friendRequestButton";
 import { Heading } from "./list/heading";
 import { GroupList } from "./list";
+import { NewGroupButton } from "./list/newGroupButton";
 import { type IGroup } from "@/types/groups/group";
 
 function Groups(): ReactElement {
@@ -276,7 +276,7 @@ function Groups(): ReactElement {
     <div className="h-full bg-white">
       <div className="mx-auto max-w-7xl py-2 px-6 text-center lg:px-8 relative">
         <div className="space-y-8 sm:space-y-12">
-          <FriendRequestButton />
+          <NewGroupButton />
           <Heading />
           <GroupList groups={groups} />
         </div>

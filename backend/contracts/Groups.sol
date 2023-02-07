@@ -21,6 +21,7 @@ contract Groups {
         mapping (address => bool) isMember;
     }
 
+    address private USERS_ADDRESS = 0x5FbDB2315678afecb367f032d93F642f64180aa3;
     uint public groupCount = 0;
     mapping (uint => Group) private groups;
 
@@ -37,7 +38,7 @@ contract Groups {
     //     address[] memory allMembers = new address[](members.length + 1);
     //     allMembers[0] = msg.sender;
 
-    //     Users.Friend[] memory friends = Users(0x5FbDB2315678afecb367f032d93F642f64180aa3).getFriends();
+    //     Users.Friend[] memory friends = Users(USERS_ADDRESS).getFriends();
 
     //     for (uint i = 0; i < members.length; i++) {
     //         bool isFriend = false;
@@ -67,7 +68,7 @@ contract Groups {
 
     function createGroup(string memory name) external{
         require(bytes(name).length > 0, "Name cannot be empty");
-        Users users = Users(0x5FbDB2315678afecb367f032d93F642f64180aa3);
+        Users users = Users(USERS_ADDRESS);
         require(users.getGroupIds().length < 10, "User cannot have more than 10 groups");
 
         groups[groupCount].name = name;
@@ -94,7 +95,7 @@ contract Groups {
         groups[groupId].isMember[msg.sender] = true;
         groups[groupId].members.push(msg.sender);
 
-        Users(0x5FbDB2315678afecb367f032d93F642f64180aa3).addGroup(groupId);
+        Users(USERS_ADDRESS).addGroup(groupId);
     }
 
     function getGroupCount() public view returns (uint) {
