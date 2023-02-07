@@ -7,7 +7,7 @@
     "deploy-testnet": "npx hardhat run ./scripts/YOUR_DEPLOY_SCRIPT --network ETH_GOERLI",
     "deploy": "npx hardhat run ./scripts/YOUR_DEPLOY_SCRIPT --network ETH_MAINNET",
     "node": "npx hardhat node",
-    "deploy-local": "npx hardhat run ./scripts/YOUR_DEPLOY_SCRIPT --network localhost"
+    "deploy-local": "npx hardhat run ./scripts/deploy.ts --network localhost"
   },
   "dependencies": {
     "dotenv": "^16.0.3"
@@ -15,7 +15,12 @@
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^2.0.1",
     "@typechain/hardhat": "^6.1.5",
+    "@types/chai": "^4.3.4",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "^18.11.18",
+    "chai": "^4.3.7",
     "hardhat": "^2.12.6",
+    "hardhat-ethers": "^1.0.1",
     "typescript": "^4.9.5"
   }
 }

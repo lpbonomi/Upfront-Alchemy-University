@@ -9,6 +9,7 @@ contract Users {
         uint friendCount;
         mapping (address => bool) friendRequests;
         mapping (uint => address) friends;
+        uint[] groupIds;
     }
 
     struct Friend {
@@ -17,7 +18,7 @@ contract Users {
     }
 
     mapping (address => User) public users;
-    mapping (string => address) private usernames;
+    mapping (string => address) public usernames;
 
     event FriendRequest(address from, address indexed to);
 
@@ -113,5 +114,14 @@ contract Users {
             friends[i] = Friend({friendAddress: addresses[i], username: friendsUsernames[i]});
         }
         return friends;
+    }
+
+    function getGroupIds() public view onlyRegisteredUser returns (uint[] memory) {
+        return users[msg.sender].groupIds;
+    }
+
+    function addGroup(uint groupId) public onlyRegisteredUser {
+        require(users[msg.sender].groupIds.length < 10, "Cannot add more than 10 groups");
+        users[msg.sender].groupIds.push(groupId);
     }
 }

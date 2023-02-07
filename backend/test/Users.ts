@@ -1,6 +1,6 @@
 import { ethers } from "hardhat";
 
-const { expect } = require("chai");
+import { expect } from "chai";
 
 describe("Create User", function () {
   it("Should create a new user", async function () {
@@ -10,9 +10,9 @@ describe("Create User", function () {
 
     await users.createUser("johndoe", { value: 100 });
 
-    await expect(await users.getUsername()).to.equal("johndoe");
-    await expect(await users.getBalance()).to.equal(100);
-    await expect(await users.getFriends()).to.have.lengthOf(0);
+    expect(await users.getUsername()).to.equal("johndoe");
+    expect(await users.getBalance()).to.equal(100);
+    expect(await users.getFriends()).to.have.lengthOf(0);
   });
 
   it("Should not create a new user with empty username", async function () {
@@ -96,8 +96,8 @@ describe("Transfer", function () {
       value: 100,
     });
     await users.transfer(otherSigner.address, 50);
-    await expect(await users.getBalance()).to.equal(50);
-    await expect(await users.connect(otherSigner).getBalance()).to.equal(150);
+    expect(await users.getBalance()).to.equal(50);
+    expect(await users.connect(otherSigner).getBalance()).to.equal(150);
   });
 
   it("Should not transfer funds if insufficient funds", async function () {
@@ -134,18 +134,16 @@ describe("Add Friend", function () {
       .to.emit(users, "FriendRequest")
       .withArgs(user.address, friend.address);
 
-    await expect(await users.getFriends()).to.have.lengthOf(0);
-    await expect(await users.getFriends()).to.not.include(friend.address);
+    expect(await users.getFriends()).to.have.lengthOf(0);
+    expect(await users.getFriends()).to.not.include(friend.address);
 
     await users.connect(friend).acceptFriendRequest(user.address);
 
-    await expect(await users.getFriends()).to.have.lengthOf(1);
-    await expect((await users.getFriends())[0].friendAddress).to.equal(
+    expect(await users.getFriends()).to.have.lengthOf(1);
+    expect((await users.getFriends())[0].friendAddress).to.equal(
       friend.address
     );
-    await expect((await users.getFriends())[0].username).to.equal(
-      "williamowen"
-    );
+    expect((await users.getFriends())[0].username).to.equal("williamowen");
   });
 
   it("Should not add a friend if user is empty", async function () {
@@ -195,8 +193,6 @@ describe("Add Friend", function () {
 
     await users.createUser("johndoe", { value: 100 });
 
-    const user = (await ethers.getSigners())[0];
-
     await expect(users.sendFriendRequest("johndoe")).to.be.revertedWith(
       "Cannot add self as friend"
     );
@@ -209,8 +205,6 @@ describe("Add Friend", function () {
 
     await users.createUser("johndoe", { value: 100 });
 
-    const user = (await ethers.getSigners())[0];
-
     await expect(users.sendFriendRequest("williamowen")).to.be.revertedWith(
       "Friend not registered"
     );
@@ -222,8 +216,6 @@ describe("Add Friend", function () {
     await users.deployed();
 
     await users.createUser("johndoe", { value: 100 });
-
-    const user = (await ethers.getSigners())[0];
 
     const friend = (await ethers.getSigners())[1];
 
