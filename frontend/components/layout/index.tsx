@@ -14,6 +14,7 @@ import {
 import Image from "next/image";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 
+import { useRouter } from "next/router";
 import { RegisterModal } from "../register";
 import ClientOnly from "../clientOnly";
 import { FriendsRequestsMenu } from "./friendsRequestsMenu";
@@ -24,12 +25,12 @@ function classNames(...classes: string[]): string {
 }
 
 const navigation = [
-  { name: "Dashboard", href: "/", icon: HomeIcon, current: true },
-  { name: "Friends", href: "friends", icon: UserIcon, current: false },
-  { name: "Groups", href: "groups", icon: UserGroupIcon, current: false },
-  { name: "Calendar", href: "#", icon: CalendarIcon, current: false },
-  { name: "Documents", href: "#", icon: InboxIcon, current: false },
-  { name: "Reports", href: "#", icon: ChartBarIcon, current: false },
+  { name: "Dashboard", href: "/", icon: HomeIcon },
+  { name: "Friends", href: "/friends", icon: UserIcon },
+  { name: "Groups", href: "/groups", icon: UserGroupIcon },
+  { name: "Calendar", href: "#", icon: CalendarIcon },
+  { name: "Documents", href: "#", icon: InboxIcon },
+  { name: "Reports", href: "#", icon: ChartBarIcon },
 ];
 
 function Layout({ children }: { children: ReactElement }): ReactElement {
@@ -37,6 +38,7 @@ function Layout({ children }: { children: ReactElement }): ReactElement {
   const [openRegisterModal, setOpenRegisterModal] =
     useState<Readonly<boolean>>(false);
 
+  const router = useRouter();
   const user = useUser();
 
   useEffect(() => {
@@ -118,7 +120,7 @@ function Layout({ children }: { children: ReactElement }): ReactElement {
                           key={item.name}
                           href={item.href}
                           className={classNames(
-                            item.current
+                            router.pathname === item.href
                               ? "bg-indigo-800 text-white"
                               : "text-indigo-100 hover:bg-indigo-600",
                             "group flex items-center px-2 py-2 text-base font-medium rounded-md"
@@ -161,7 +163,7 @@ function Layout({ children }: { children: ReactElement }): ReactElement {
                     key={item.name}
                     href={item.href}
                     className={classNames(
-                      item.current
+                      router.pathname === item.href
                         ? "bg-indigo-800 text-white"
                         : "text-indigo-100 hover:bg-indigo-600",
                       "group flex items-center px-2 py-2 text-sm font-medium rounded-md"
