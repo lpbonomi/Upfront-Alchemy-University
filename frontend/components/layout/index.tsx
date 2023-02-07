@@ -5,10 +5,10 @@ import {
   Bars3BottomLeftIcon,
   CalendarIcon,
   ChartBarIcon,
-  FolderIcon,
   HomeIcon,
   InboxIcon,
-  UsersIcon,
+  UserGroupIcon,
+  UserIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import Image from "next/image";
@@ -24,8 +24,8 @@ function classNames(...classes: string[]): string {
 
 const navigation = [
   { name: "Dashboard", href: "/", icon: HomeIcon, current: true },
-  { name: "Friends", href: "friends", icon: UsersIcon, current: false },
-  { name: "Projects", href: "#", icon: FolderIcon, current: false },
+  { name: "Friends", href: "friends", icon: UserIcon, current: false },
+  { name: "Groups", href: "groups", icon: UserGroupIcon, current: false },
   { name: "Calendar", href: "#", icon: CalendarIcon, current: false },
   { name: "Documents", href: "#", icon: InboxIcon, current: false },
   { name: "Reports", href: "#", icon: ChartBarIcon, current: false },
