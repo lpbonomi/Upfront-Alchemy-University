@@ -14,18 +14,16 @@ import {
 import Image from "next/image";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 
-import { useContractRead, useAccount } from "wagmi";
-
 import { RegisterModal } from "../register";
 import { FriendsRequestsMenu } from "./friendsRequestsMenu";
-import usersABI from "@/abi/users.json";
+import { useUser } from "@/hooks/useUser";
 
 function classNames(...classes: string[]): string {
   return classes.filter(Boolean).join(" ");
 }
 
 const navigation = [
-  { name: "Dashboard", href: "#", icon: HomeIcon, current: true },
+  { name: "Dashboard", href: "/", icon: HomeIcon, current: true },
   { name: "Friends", href: "friends", icon: UsersIcon, current: false },
   { name: "Projects", href: "#", icon: FolderIcon, current: false },
   { name: "Calendar", href: "#", icon: CalendarIcon, current: false },
@@ -38,31 +36,13 @@ function Layout({ children }: { children: ReactElement }): ReactElement {
   const [openRegisterModal, setOpenRegisterModal] =
     useState<Readonly<boolean>>(false);
 
-  const { address } = useAccount();
-
-  const {
-    data: isRegistered,
-    isError,
-    isLoading,
-  } = useContractRead({
-    address: process.env.NEXT_PUBLIC_USERS_CONTRACT_ADDRESS,
-    abi: usersABI,
-    functionName: "isRegistered",
-    overrides: {
-      from: address,
-    },
-  }) as { data: boolean; isError: boolean; isLoading: boolean };
+  const user = useUser();
 
   useEffect(() => {
-    if (
-      !isRegistered &&
-      !isLoading &&
-      !isError &&
-      openRegisterModal !== !isRegistered
-    ) {
-      setOpenRegisterModal(!isRegistered);
+    if (openRegisterModal !== (user === null)) {
+      setOpenRegisterModal(true);
     }
-  }, [isRegistered, isLoading, isError, openRegisterModal]);
+  }, [user, openRegisterModal]);
 
   return (
     <>
@@ -210,7 +190,11 @@ function Layout({ children }: { children: ReactElement }): ReactElement {
               <Bars3BottomLeftIcon className="h-6 w-6" aria-hidden="true" />
             </button>
             <div className="flex flex-1 justify-between px-8">
-              <div className="flex flex-1" />
+              <div className="flex flex-1">
+                <h2 className="pt-4 text-md xs:text-lg font-bold leading text-black sm:truncate sm:text-2xl sm:tracking-tight">
+                  Upfront Balance: 100 ETH
+                </h2>
+              </div>
               <div className="ml-4 flex items-center md:ml-6">
                 <FriendsRequestsMenu />
                 <ConnectButton />

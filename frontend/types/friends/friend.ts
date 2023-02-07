@@ -1,4 +1,4 @@
-import { type address } from "..";
+import { type address } from "../index";
 
 export interface IFriend {
   address: address;
