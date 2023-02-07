@@ -15,7 +15,7 @@ function useUser(): Readonly<IUser> | null {
     overrides: {
       from: address,
     },
-  }) as { data: boolean; isError: boolean; isLoading: boolean };
+  }) as { data: boolean };
 
   const { data: username } = useContractRead({
     address: process.env.NEXT_PUBLIC_USERS_CONTRACT_ADDRESS,
@@ -24,7 +24,16 @@ function useUser(): Readonly<IUser> | null {
     overrides: {
       from: address,
     },
-  }) as { data: string; isError: boolean; isLoading: boolean };
+  }) as { data: string };
+
+  const { data: balance } = useContractRead({
+    address: process.env.NEXT_PUBLIC_USERS_CONTRACT_ADDRESS,
+    abi: usersABI,
+    functionName: "getBalance",
+    overrides: {
+      from: address,
+    },
+  }) as { data: number };
 
   const friends = useFriends();
 
@@ -32,7 +41,7 @@ function useUser(): Readonly<IUser> | null {
     return null;
   }
 
-  return { address, username, friends };
+  return { address, username, balance, friends };
 }
 
 export { useUser };
