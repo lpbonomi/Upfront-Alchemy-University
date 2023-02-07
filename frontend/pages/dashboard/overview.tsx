@@ -5,6 +5,7 @@ import {
   UserGroupIcon,
 } from "@heroicons/react/24/outline";
 import { useUser } from "@/hooks/useUser";
+import ClientOnly from "@/components/clientOnly";
 
 function Overview(): ReactElement {
   const user = useUser();
@@ -29,7 +30,10 @@ function Overview(): ReactElement {
                   </dt>
                   <dd>
                     <div className="text-lg font-medium text-gray-900">
-                      {user?.balance?.toString() ?? "?"} eth
+                      <ClientOnly>
+                        {user?.balance?.toString() ?? "?"}
+                      </ClientOnly>
+                      eth
                     </div>
                   </dd>
                 </dl>
@@ -77,7 +81,9 @@ function Overview(): ReactElement {
                   </dt>
                   <dd>
                     <div className="text-lg font-medium text-gray-900">
-                      {user?.friends.length.toString()}
+                      <ClientOnly>
+                        {user?.friends.length.toString() ?? "?"}
+                      </ClientOnly>
                     </div>
                   </dd>
                 </dl>

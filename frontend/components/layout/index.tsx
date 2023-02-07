@@ -15,6 +15,7 @@ import Image from "next/image";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 import { RegisterModal } from "../register";
+import ClientOnly from "../clientOnly";
 import { FriendsRequestsMenu } from "./friendsRequestsMenu";
 import { useUser } from "@/hooks/useUser";
 
@@ -192,7 +193,9 @@ function Layout({ children }: { children: ReactElement }): ReactElement {
             <div className="flex flex-1 justify-between px-8">
               <div className="flex flex-1">
                 <h2 className="pt-4 text-md xs:text-lg font-bold leading text-black sm:truncate sm:text-2xl sm:tracking-tight">
-                  Upfront Balance: {user?.balance?.toString() ?? "?"} eth
+                  {"Upfront Balance: "}
+                  <ClientOnly>{user?.balance?.toString() ?? "?"}</ClientOnly>
+                  {" eth"}
                 </h2>
               </div>
               <div className="ml-4 flex items-center md:ml-6">
