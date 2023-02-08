@@ -39,7 +39,7 @@ contract Users {
         uint id;
         string name;
         string admin;
-        string[] members;
+        Friend[] members;
         uint paymentCount;
     }
 
@@ -74,12 +74,12 @@ contract Users {
         usernames[username] = msg.sender;
     }
     
-    function getUsername(address user) public view returns (string memory) {
-        return users[user].username;
+    function getUsername() public view returns (string memory) {
+        return users[msg.sender].username;
     }
 
-    function getBalance(address user) public view returns (uint) {
-        return users[user].balance;
+    function getBalance() public view returns (uint) {
+        return users[msg.sender].balance;
     }
 
     function getGroupIds() public view returns (uint[] memory) {
@@ -138,13 +138,14 @@ contract Users {
         users[friend].friendRequests[msg.sender] = false;
     }
 
-    function getFriends(address user) public view returns (Friend[] memory) {
-        address[] memory addresses = new address[](users[user].friendCount);
-        string[] memory friendsUsernames = new string[](users[user].friendCount);
-        Friend[] memory friends = new Friend[](users[user].friendCount);
-        for (uint i = 0; i < users[user].friendCount; i++) {
-            addresses[i] = users[user].friends[i];
-            friendsUsernames[i] = users[users[user].friends[i]].username;
+    function getFriends() public view returns (Friend[] memory) {
+        User storage user = users[msg.sender];
+        address[] memory addresses = new address[](user.friendCount);
+        string[] memory friendsUsernames = new string[](user.friendCount);
+        Friend[] memory friends = new Friend[](user.friendCount);
+        for (uint i = 0; i < user.friendCount; i++) {
+            addresses[i] = user.friends[i];
+            friendsUsernames[i] = users[user.friends[i]].username;
             friends[i] = Friend({friendAddress: addresses[i], username: friendsUsernames[i]});
         }
         return friends;
@@ -189,9 +190,12 @@ contract Users {
     }
 
     function getGroup(uint groupId) public view returns (GroupView memory) {
-        string[] memory members = new string[](groups[groupId].members.length);
+        Friend[] memory members = new Friend[](groups[groupId].members.length);
         for (uint i = 0; i < groups[groupId].members.length; i++) {
-            members[i] = users[groups[groupId].members[i]].username;
+            members[i] = Friend({
+                friendAddress: groups[groupId].members[i],
+                username: users[groups[groupId].members[i]].username
+            });
         }
 
         return GroupView({
@@ -206,9 +210,12 @@ contract Users {
     function getGroups() public view returns (GroupView[] memory) {
         GroupView[] memory allGroups = new GroupView[](users[msg.sender].groupIds.length);
         for (uint i = 0; i < users[msg.sender].groupIds.length; i++) {
-            string[] memory members = new string[](groups[users[msg.sender].groupIds[i]].members.length);
+            Friend[] memory members = new Friend[](groups[users[msg.sender].groupIds[i]].members.length);
             for (uint j = 0; j < groups[users[msg.sender].groupIds[i]].members.length; j++) {
-                members[j] = users[groups[users[msg.sender].groupIds[i]].members[j]].username;
+                members[j] = Friend({
+                    friendAddress: groups[users[msg.sender].groupIds[i]].members[j],
+                    username: users[groups[users[msg.sender].groupIds[i]].members[j]].username
+                });
             }
 
             allGroups[i].id = users[msg.sender].groupIds[i];

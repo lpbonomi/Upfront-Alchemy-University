@@ -1,8 +1,9 @@
-require("@nomicfoundation/hardhat-toolbox");
+import "@nomicfoundation/hardhat-toolbox";
 require("dotenv").config();
 
 import "@typechain/hardhat";
 import "@nomiclabs/hardhat-ethers";
+import "./tasks/users/populate";
 
 module.exports = {
   solidity: "0.8.17",

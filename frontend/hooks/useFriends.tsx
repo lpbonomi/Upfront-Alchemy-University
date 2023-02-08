@@ -15,7 +15,7 @@ function useFriends(): Readonly<IFriend[]> {
     overrides: {
       from: address,
     },
-  }) as { data: IFriend[]; isError: boolean; isLoading: boolean };
+  }) as { data: IFriend[]; isLoading: boolean };
 
   useEffect(() => {
     if (!isLoading) {

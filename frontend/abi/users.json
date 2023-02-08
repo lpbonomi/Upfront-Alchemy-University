@@ -110,13 +110,7 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      }
-    ],
+    "inputs": [],
     "name": "getBalance",
     "outputs": [
       {
@@ -129,13 +123,7 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      }
-    ],
+    "inputs": [],
     "name": "getFriends",
     "outputs": [
       {
@@ -187,9 +175,21 @@
             "type": "string"
           },
           {
-            "internalType": "string[]",
+            "components": [
+              {
+                "internalType": "address",
+                "name": "friendAddress",
+                "type": "address"
+              },
+              {
+                "internalType": "string",
+                "name": "username",
+                "type": "string"
+              }
+            ],
+            "internalType": "struct Users.Friend[]",
             "name": "members",
-            "type": "string[]"
+            "type": "tuple[]"
           },
           {
             "internalType": "uint256",
@@ -407,9 +407,21 @@
             "type": "string"
           },
           {
-            "internalType": "string[]",
+            "components": [
+              {
+                "internalType": "address",
+                "name": "friendAddress",
+                "type": "address"
+              },
+              {
+                "internalType": "string",
+                "name": "username",
+                "type": "string"
+              }
+            ],
+            "internalType": "struct Users.Friend[]",
             "name": "members",
-            "type": "string[]"
+            "type": "tuple[]"
           },
           {
             "internalType": "uint256",
@@ -426,13 +438,7 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      }
-    ],
+    "inputs": [],
     "name": "getUsername",
     "outputs": [
       {

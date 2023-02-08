@@ -11,7 +11,6 @@ function Friend({ friend }: { friend: IFriend }): ReactElement {
       <div className="space-y-2">
         <div className="text-xs font-medium lg:text-sm">
           <h3>{friend.username}</h3>
-          <p className="text-indigo-600">{friend.address}</p>
         </div>
       </div>
     </div>

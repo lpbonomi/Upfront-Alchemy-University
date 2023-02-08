@@ -1,7 +1,7 @@
 import { type Dispatch, type SetStateAction, type ReactElement } from "react";
 import { CurrencyDollarIcon } from "@heroicons/react/24/outline";
 import { WithdrawModalForm } from "./modalForm";
-import { ModalPanel } from "@/components/modal/modalPanel";
+import { ModalPanel } from "@/components/common/modal/modalPanel";
 
 function WithdrawModal({
   openWithdrawModal,
