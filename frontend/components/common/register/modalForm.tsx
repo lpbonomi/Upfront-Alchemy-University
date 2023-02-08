@@ -8,6 +8,8 @@ import usersABI from "@/abi/users.json";
 function ModalForm(): ReactElement {
   const [username, setUsername] = useState<Readonly<string>>("");
   const [initialDeposit, setInitialDeposit] = useState<Readonly<number>>(0);
+  const [transactionError, setTransactionError] =
+    useState<Readonly<string>>("");
 
   const { config } = usePrepareContractWrite({
     address: process.env.NEXT_PUBLIC_USERS_CONTRACT_ADDRESS,
@@ -18,12 +20,23 @@ function ModalForm(): ReactElement {
     overrides: {
       value: initialDeposit,
     },
+    onError(error: Error) {
+      const e = error as unknown as { reason: string };
+      setTransactionError(e.reason);
+    },
+    onSuccess() {
+      setTransactionError("");
+    },
   });
 
   const { write } = useContractWrite({
     ...config,
     onSuccess: () => {
       Router.reload();
+    },
+    onError(error: Error) {
+      const e = error as unknown as { reason: string };
+      setTransactionError(e.reason);
     },
   });
 
@@ -34,6 +47,9 @@ function ModalForm(): ReactElement {
 
   return (
     <>
+      {transactionError.length > 0 && (
+        <div className="text-red-500">{transactionError}</div>
+      )}
       <form
         className="mt-5 sm:flex sm:items-center"
         onSubmit={(e) => {
