@@ -11,7 +11,9 @@ function GroupPage(): ReactElement {
   const router = useRouter();
   const { groupId } = router.query as unknown as { groupId: number };
 
-  const group = useGroups()[groupId];
+  const group = useGroups().find(
+    (group) => group.id.toString() === groupId.toString()
+  );
 
   return (
     <>
