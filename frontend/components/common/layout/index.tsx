@@ -13,7 +13,7 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 import { useRouter } from "next/router";
 import { RegisterModal } from "../register";
-import { FriendsRequestsMenu } from "./friendsRequestsMenu";
+import { FriendsRequestsMenu } from "./notificationsMenu";
 import ClientOnly from "@/components/common/clientOnly";
 import { useUser } from "@/hooks/useUser";
 
