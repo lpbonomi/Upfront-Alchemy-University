@@ -8,7 +8,7 @@ import {
 import { CheckIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
 import usersABI from "@/abi/users.json";
-import { Avatar } from "@/components/avatar/avatar";
+import { Avatar } from "@/components/common/avatar/avatar";
 
 function FriendRequest({ from }: { from: `0x${string}` }): ReactElement {
   const { data: username } = useContractRead({

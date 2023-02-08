@@ -1,7 +1,7 @@
 import { type ReactElement } from "react";
-import { FriendRequestButton } from "./list/friendRequestButton";
-import { Heading } from "./list/heading";
-import { FriendList } from "./list";
+import { FriendRequestButton } from "../../components/friends/friendRequestButton";
+import { Heading } from "../../components/friends/heading";
+import { FriendList } from "../../components/friends";
 import { useFriends } from "@/hooks/useFriends";
 
 function Friends(): ReactElement {

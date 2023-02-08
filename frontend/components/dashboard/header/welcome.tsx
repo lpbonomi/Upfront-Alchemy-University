@@ -1,8 +1,8 @@
 import { type ReactElement } from "react";
 import { IdentificationIcon } from "@heroicons/react/24/outline";
-import { Avatar } from "@/components/avatar/avatar";
+import { Avatar } from "@/components/common/avatar/avatar";
 import { useUser } from "@/hooks/useUser";
-import ClientOnly from "@/components/clientOnly";
+import ClientOnly from "@/components/common/clientOnly";
 
 function Welcome(): ReactElement {
   const user = useUser();

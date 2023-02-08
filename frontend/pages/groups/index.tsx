@@ -1,7 +1,7 @@
 import { type ReactElement } from "react";
-import { Heading } from "./list/heading";
-import { GroupList } from "./list";
-import { NewGroupButton } from "./list/newGroupButton";
+import { Heading } from "@/components/groups/heading";
+import { GroupList } from "@/components/groups";
+import { NewGroupButton } from "@/components/groups/newGroupButton";
 import { useGroups } from "@/hooks/useGroups";
 
 function Groups(): ReactElement {

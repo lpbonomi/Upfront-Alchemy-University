@@ -18,7 +18,7 @@ import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
 import { type ReactElement } from "react";
 import { type AppProps } from "next/app";
-import { Layout } from "@/components/layout";
+import { Layout } from "@/components/common/layout";
 
 const { chains, provider } = configureChains(
   [

@@ -16,8 +16,8 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 import { useRouter } from "next/router";
 import { RegisterModal } from "../register";
-import ClientOnly from "../clientOnly";
 import { FriendsRequestsMenu } from "./friendsRequestsMenu";
+import ClientOnly from "@/components/common/clientOnly";
 import { useUser } from "@/hooks/useUser";
 
 function classNames(...classes: string[]): string {

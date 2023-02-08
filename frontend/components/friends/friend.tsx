@@ -1,6 +1,6 @@
 import { type ReactElement } from "react";
 import { type IFriend } from "@/types/friends/friend";
-import { Avatar } from "@/components/avatar/avatar";
+import { Avatar } from "@/components/common/avatar/avatar";
 
 function Friend({ friend }: { friend: IFriend }): ReactElement {
   return (

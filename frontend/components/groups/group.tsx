@@ -1,5 +1,5 @@
 import { type ReactElement } from "react";
-import { Avatar } from "@/components/avatar/avatar";
+import { Avatar } from "@/components/common/avatar/avatar";
 import { type IGroup } from "@/types/groups/group";
 
 function Group({ group }: { group: IGroup }): ReactElement {

@@ -1,7 +1,7 @@
 import { type ReactElement } from "react";
 import { BanknotesIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
-import { Overview } from "./overview";
-import { Header } from "./header";
+import { Overview } from "../../components/dashboard/overview";
+import { Header } from "../../components/dashboard/header";
 const transactions = [
   {
     id: 1,
