@@ -2,6 +2,7 @@ import { useState, type FormEvent, type ReactElement } from "react";
 
 import { useContractWrite, usePrepareContractWrite } from "wagmi";
 
+import Router from "next/router";
 import usersABI from "@/abi/users.json";
 
 function ModalForm(): ReactElement {
@@ -19,7 +20,12 @@ function ModalForm(): ReactElement {
     },
   });
 
-  const { write } = useContractWrite(config);
+  const { write } = useContractWrite({
+    ...config,
+    onSuccess: () => {
+      Router.reload();
+    },
+  });
 
   function handleSubmit(event: FormEvent): void {
     event.preventDefault();

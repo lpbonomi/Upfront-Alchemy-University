@@ -4,7 +4,7 @@ import {
   useContractWrite,
   usePrepareContractWrite,
 } from "wagmi";
-
+import Router from "next/router";
 import { CheckIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
 import usersABI from "@/abi/users.json";
@@ -26,7 +26,12 @@ function FriendRequest({ from }: { from: `0x${string}` }): ReactElement {
     functionName: "acceptFriendRequest",
     args: [from],
   });
-  const { write: acceptWrite } = useContractWrite(acceptConfig);
+  const { write: acceptWrite } = useContractWrite({
+    ...acceptConfig,
+    onSuccess: () => {
+      Router.reload();
+    },
+  });
 
   const { config: deleteConfig } = usePrepareContractWrite({
     address: process.env.NEXT_PUBLIC_USERS_CONTRACT_ADDRESS,
@@ -34,7 +39,12 @@ function FriendRequest({ from }: { from: `0x${string}` }): ReactElement {
     functionName: "deleteFriendRequest",
     args: [from],
   });
-  const { write: deleteWrite } = useContractWrite(deleteConfig);
+  const { write: deleteWrite } = useContractWrite({
+    ...deleteConfig,
+    onSuccess: () => {
+      Router.reload();
+    },
+  });
 
   return (
     <div className="pt-4 mb-12 pl-4">

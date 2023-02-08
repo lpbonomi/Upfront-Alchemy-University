@@ -36,8 +36,10 @@ function Layout({ children }: { children: ReactElement }): ReactElement {
   const user = useUser();
 
   useEffect(() => {
-    if (openRegisterModal !== (user === null)) {
+    if (user === null) {
       setOpenRegisterModal(true);
+    } else {
+      setOpenRegisterModal(false);
     }
   }, [user, openRegisterModal]);
 
