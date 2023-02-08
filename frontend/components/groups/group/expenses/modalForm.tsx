@@ -5,7 +5,7 @@ import { useContractWrite, usePrepareContractWrite } from "wagmi";
 import Router from "next/router";
 import usersABI from "@/abi/users.json";
 
-function ModalForm({ groupId }: { groupId: number }): ReactElement {
+function ExpensesModalForm({ groupId }: { groupId: number }): ReactElement {
   const [transactionError, setTransactionError] =
     useState<Readonly<string>>("");
   const [description, setDescription] = useState<Readonly<string>>("");
@@ -101,4 +101,4 @@ function ModalForm({ groupId }: { groupId: number }): ReactElement {
     </>
   );
 }
-export { ModalForm };
+export { ExpensesModalForm };
