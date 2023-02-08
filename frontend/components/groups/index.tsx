@@ -1,4 +1,5 @@
 import { type ReactElement } from "react";
+import Link from "next/link";
 import { Group } from "./group";
 import { type IGroup } from "@/types/groups/group";
 
@@ -10,7 +11,9 @@ function GroupList({ groups }: { groups: Readonly<IGroup[]> }): ReactElement {
     >
       {groups?.map((g) => (
         <li key={g.id}>
-          <Group group={g} />
+          <Link href={`/groups/${g.id}`}>
+            <Group group={g} />
+          </Link>
         </li>
       ))}
     </ul>
