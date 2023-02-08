@@ -17,20 +17,18 @@ contract Users {
         string username;
     }
 
-    struct Payment{
-        address from;
-        address to;
+    struct Expense{
+        address paidBy;
+        string description;
         uint amount;
-        uint timestamp;
-        bool accepted;
     }
 
     struct Group {
         string name;
         address admin;
         address[] members;
-        mapping (uint => Payment) payments;
-        uint paymentCount;
+        mapping (uint => Expense) expenses;
+        uint expenseCount;
         mapping (address => bool) isInvited;
         mapping (address => bool) isMember;
     }
@@ -40,7 +38,7 @@ contract Users {
         string name;
         string admin;
         Friend[] members;
-        uint paymentCount;
+        uint expenseCount;
     }
 
     mapping (address => User) public users;
@@ -159,8 +157,9 @@ contract Users {
         groups[groupCount].name = name;
         groups[groupCount].admin = msg.sender;
         groups[groupCount].members.push(msg.sender);
-        groups[groupCount].paymentCount = 0;
+        groups[groupCount].expenseCount = 0;
         users[msg.sender].groupIds.push(groupCount);
+        groups[groupCount].isMember[msg.sender] = true;
 
         groupCount++;
     }
@@ -203,7 +202,7 @@ contract Users {
             name: groups[groupId].name,
             admin: users[groups[groupId].admin].username,
             members: members,
-            paymentCount: groups[groupId].paymentCount
+            expenseCount: groups[groupId].expenseCount
         });
     }
 
@@ -222,7 +221,7 @@ contract Users {
             allGroups[i].name = groups[users[msg.sender].groupIds[i]].name;
             allGroups[i].admin = users[groups[users[msg.sender].groupIds[i]].admin].username;
             allGroups[i].members = members;
-            allGroups[i].paymentCount = groups[users[msg.sender].groupIds[i]].paymentCount;
+            allGroups[i].expenseCount = groups[users[msg.sender].groupIds[i]].expenseCount;
         }
         return allGroups;
     }
@@ -239,20 +238,29 @@ contract Users {
         return groups[groupId].members;
     }
 
-    function getGroupPayments(uint groupId) public view returns (Payment[] memory) {
-        Payment[] memory allPayments = new Payment[](groups[groupId].paymentCount);
-        for (uint i = 0; i < groups[groupId].paymentCount; i++) {
-            allPayments[i] = groups[groupId].payments[i];
-        }
-        return allPayments;
-    }
-
-    function getGroupPayment(uint groupId, uint paymentId) public view returns (Payment memory) {
-        return groups[groupId].payments[paymentId];
-    }
-
     function addGroup(uint groupId) internal  {
         require(users[msg.sender].groupIds.length < 10, "Cannot add more than 10 groups");
         users[msg.sender].groupIds.push(groupId);
+    }
+
+    function addExpense(uint groupId, string memory description, uint amount) public {
+        require(groups[groupId].isMember[msg.sender] == true, "User is not a member of the group");
+        require(groups[groupId].expenseCount < 100, "Cannot add more than 100 expenses");
+
+        groups[groupId].expenses[groups[groupId].expenseCount].description = description;
+        groups[groupId].expenses[groups[groupId].expenseCount].amount = amount;
+        groups[groupId].expenses[groups[groupId].expenseCount].paidBy = msg.sender;
+
+        uint amountPerMember = amount / groups[groupId].members.length;
+
+        for (uint i = 0; i < groups[groupId].members.length; i++) {
+            if (groups[groupId].members[i] != msg.sender) {
+                users[groups[groupId].members[i]].balance -= amountPerMember;
+            }
+        }
+
+        users[msg.sender].balance -= amount - (amountPerMember * (groups[groupId].members.length - 1));
+
+        groups[groupId].expenseCount++;
     }
 }

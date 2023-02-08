@@ -29,8 +29,8 @@ function ModalForm(): ReactElement {
       }}
     >
       <div className="w-full sm:max-w-xs">
-        <label htmlFor="email" className="sr-only">
-          Email
+        <label htmlFor="username" className="sr-only">
+          Username
         </label>
         <input
           id="username"
