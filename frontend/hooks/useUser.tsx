@@ -1,5 +1,6 @@
 import { useAccount, useContractRead } from "wagmi";
 import { useFriends } from "./useFriends";
+import { useGroups } from "./useGroups";
 import usersABI from "@/abi/users.json";
 
 import { type IUser } from "@/types/users/user";
@@ -36,12 +37,13 @@ function useUser(): Readonly<IUser> | null {
   }) as { data: number };
 
   const friends = useFriends();
+  const groups = useGroups();
 
   if (!isRegistered) {
     return null;
   }
 
-  return { address, username, balance, friends };
+  return { address, username, balance, friends, groups };
 }
 
 export { useUser };

@@ -2,14 +2,14 @@ import { useState, type FormEvent, type ReactElement } from "react";
 
 import { useContractWrite, usePrepareContractWrite } from "wagmi";
 
-import groupsABI from "@/abi/groups.json";
+import usersABI from "@/abi/users.json";
 
 function ModalForm(): ReactElement {
   const [groupName, setGroupName] = useState<Readonly<string>>("");
 
   const { config } = usePrepareContractWrite({
     address: process.env.NEXT_PUBLIC_GROUPS_CONTRACT_ADDRESS,
-    abi: groupsABI,
+    abi: usersABI,
     functionName: "createGroup",
     args: [groupName],
   });

@@ -17,10 +17,40 @@ contract Users {
         string username;
     }
 
+    struct Payment{
+        address from;
+        address to;
+        uint amount;
+        uint timestamp;
+        bool accepted;
+    }
+
+    struct Group {
+        string name;
+        address admin;
+        address[] members;
+        mapping (uint => Payment) payments;
+        uint paymentCount;
+        mapping (address => bool) isInvited;
+        mapping (address => bool) isMember;
+    }
+
+    struct GroupView {
+        uint id;
+        string name;
+        string admin;
+        string[] members;
+        uint paymentCount;
+    }
+
     mapping (address => User) public users;
     mapping (string => address) public usernames;
+    mapping (uint => Group) private groups;
+
+    uint public groupCount = 0;
 
     event FriendRequest(address from, address indexed to);
+    event MemberInvited(uint groupId, address member);
 
     modifier onlyRegisteredUser() {
         require(bytes(users[msg.sender].username).length > 0, "User not registered");
@@ -44,12 +74,16 @@ contract Users {
         usernames[username] = msg.sender;
     }
     
-    function getUsername() public view onlyRegisteredUser returns (string memory) {
-        return users[msg.sender].username;
+    function getUsername(address user) public view returns (string memory) {
+        return users[user].username;
     }
 
-    function getBalance() public view onlyRegisteredUser returns (uint) {
-        return users[msg.sender].balance;
+    function getBalance(address user) public view returns (uint) {
+        return users[user].balance;
+    }
+
+    function getGroupIds() public view returns (uint[] memory) {
+        return users[msg.sender].groupIds;
     }
 
     function deposit() external payable onlyRegisteredUser {
@@ -104,23 +138,113 @@ contract Users {
         users[friend].friendRequests[msg.sender] = false;
     }
 
-    function getFriends() public view onlyRegisteredUser returns (Friend[] memory) {
-        address[] memory addresses = new address[](users[msg.sender].friendCount);
-        string[] memory friendsUsernames = new string[](users[msg.sender].friendCount);
-        Friend[] memory friends = new Friend[](users[msg.sender].friendCount);
-        for (uint i = 0; i < users[msg.sender].friendCount; i++) {
-            addresses[i] = users[msg.sender].friends[i];
-            friendsUsernames[i] = users[users[msg.sender].friends[i]].username;
+    function getFriends(address user) public view returns (Friend[] memory) {
+        address[] memory addresses = new address[](users[user].friendCount);
+        string[] memory friendsUsernames = new string[](users[user].friendCount);
+        Friend[] memory friends = new Friend[](users[user].friendCount);
+        for (uint i = 0; i < users[user].friendCount; i++) {
+            addresses[i] = users[user].friends[i];
+            friendsUsernames[i] = users[users[user].friends[i]].username;
             friends[i] = Friend({friendAddress: addresses[i], username: friendsUsernames[i]});
         }
         return friends;
     }
 
-    function getGroupIds() public view onlyRegisteredUser returns (uint[] memory) {
-        return users[msg.sender].groupIds;
+
+    function createGroup(string memory name) external{
+        require(bytes(name).length > 0, "Name cannot be empty");
+        require(users[msg.sender].groupIds.length < 10, "User cannot have more than 10 groups");
+
+        groups[groupCount].name = name;
+        groups[groupCount].admin = msg.sender;
+        groups[groupCount].members.push(msg.sender);
+        groups[groupCount].paymentCount = 0;
+        users[msg.sender].groupIds.push(groupCount);
+
+        groupCount++;
     }
 
-    function addGroup(uint groupId) public onlyRegisteredUser {
+    function sendInvitation(uint groupId, address member) external {
+        require(groups[groupId].admin == msg.sender, "Only admin can invite members");
+        require(groups[groupId].isInvited[member] == false, "Invitation already sent");
+        require(groups[groupId].isMember[member] == false, "Member already exists");
+        require(groups[groupId].members.length < 5, "Total members cannot be more than 5");
+
+        groups[groupId].isInvited[member] = true;
+        emit MemberInvited(groupId, member);
+    }
+
+    function acceptInvitation(uint groupId) external {
+        require(groups[groupId].isInvited[msg.sender] == true, "Invitation not found");
+
+        groups[groupId].isInvited[msg.sender] = false;
+        groups[groupId].isMember[msg.sender] = true;
+        groups[groupId].members.push(msg.sender);
+
+        addGroup(groupId);
+    }
+
+    function getGroupCount() public view returns (uint) {
+        return groupCount;
+    }
+
+    function getGroup(uint groupId) public view returns (GroupView memory) {
+        string[] memory members = new string[](groups[groupId].members.length);
+        for (uint i = 0; i < groups[groupId].members.length; i++) {
+            members[i] = users[groups[groupId].members[i]].username;
+        }
+
+        return GroupView({
+            id: groupId,
+            name: groups[groupId].name,
+            admin: users[groups[groupId].admin].username,
+            members: members,
+            paymentCount: groups[groupId].paymentCount
+        });
+    }
+
+    function getGroups() public view returns (GroupView[] memory) {
+        GroupView[] memory allGroups = new GroupView[](users[msg.sender].groupIds.length);
+        for (uint i = 0; i < users[msg.sender].groupIds.length; i++) {
+            string[] memory members = new string[](groups[users[msg.sender].groupIds[i]].members.length);
+            for (uint j = 0; j < groups[users[msg.sender].groupIds[i]].members.length; j++) {
+                members[j] = users[groups[users[msg.sender].groupIds[i]].members[j]].username;
+            }
+
+            allGroups[i].id = users[msg.sender].groupIds[i];
+            allGroups[i].name = groups[users[msg.sender].groupIds[i]].name;
+            allGroups[i].admin = users[groups[users[msg.sender].groupIds[i]].admin].username;
+            allGroups[i].members = members;
+            allGroups[i].paymentCount = groups[users[msg.sender].groupIds[i]].paymentCount;
+        }
+        return allGroups;
+    }
+
+    function getGroupName(uint groupId) public view returns (string memory) {
+        return groups[groupId].name;
+    }
+
+    function getGroupAdmin(uint groupId) public view returns (address) {
+        return groups[groupId].admin;
+    }
+
+    function getGroupMembers(uint groupId) public view returns (address[] memory) {
+        return groups[groupId].members;
+    }
+
+    function getGroupPayments(uint groupId) public view returns (Payment[] memory) {
+        Payment[] memory allPayments = new Payment[](groups[groupId].paymentCount);
+        for (uint i = 0; i < groups[groupId].paymentCount; i++) {
+            allPayments[i] = groups[groupId].payments[i];
+        }
+        return allPayments;
+    }
+
+    function getGroupPayment(uint groupId, uint paymentId) public view returns (Payment memory) {
+        return groups[groupId].payments[paymentId];
+    }
+
+    function addGroup(uint groupId) internal  {
         require(users[msg.sender].groupIds.length < 10, "Cannot add more than 10 groups");
         users[msg.sender].groupIds.push(groupId);
     }
