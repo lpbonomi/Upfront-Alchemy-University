@@ -13,7 +13,7 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 import { useRouter } from "next/router";
 import { RegisterModal } from "../register";
-import { FriendsRequestsMenu } from "./notificationsMenu";
+import { NotificationsMenu } from "./notificationsMenu";
 import ClientOnly from "@/components/common/clientOnly";
 import { useUser } from "@/hooks/useUser";
 
@@ -197,7 +197,7 @@ function Layout({ children }: { children: ReactElement }): ReactElement {
                 </h2>
               </div>
               <div className="ml-4 flex items-center md:ml-6">
-                <FriendsRequestsMenu />
+                <NotificationsMenu />
                 <ConnectButton />
               </div>
             </div>

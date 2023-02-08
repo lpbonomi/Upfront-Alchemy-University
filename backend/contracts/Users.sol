@@ -182,7 +182,7 @@ contract Users {
         emit GroupInvite(groupId, member);
     }
 
-    function acceptInvitation(uint groupId) external {
+    function acceptGroupInvitation(uint groupId) external {
         require(groups[groupId].isInvited[msg.sender] == true, "Invitation not found");
 
         groups[groupId].isInvited[msg.sender] = false;
@@ -190,6 +190,12 @@ contract Users {
         groups[groupId].members.push(msg.sender);
 
         addGroup(groupId);
+    }
+
+    function deleteGroupInvitation(uint groupId) external {
+        require(groups[groupId].isInvited[msg.sender] == true, "Invitation not found");
+
+        groups[groupId].isInvited[msg.sender] = false;
     }
 
     function getGroupCount() public view returns (uint) {
@@ -240,8 +246,15 @@ contract Users {
         return groups[groupId].admin;
     }
 
-    function getGroupMembers(uint groupId) public view returns (address[] memory) {
-        return groups[groupId].members;
+    function getGroupMembers(uint groupId) public view returns (Friend[] memory) {
+        Friend[] memory members = new Friend[](groups[groupId].members.length);
+        for (uint i = 0; i < groups[groupId].members.length; i++) {
+            members[i] = Friend({
+                friendAddress: groups[groupId].members[i],
+                username: users[groups[groupId].members[i]].username
+            });
+        }
+        return members;
     }
 
     function addGroup(uint groupId) internal  {
