@@ -39,4 +39,11 @@ task("populate", "Populate the contract with users").setAction(async () => {
   }
 
   console.log("Groups created!");
+
+  for (let i = 1; i <= 4; i++) {
+    await users.connect(signers[i]).addExpense(0, "water", 100);
+    await users.connect(signers[i]).addExpense(0, "gas", 345);
+    await users.connect(signers[i]).addExpense(0, "electricity", 253);
+    await users.connect(signers[i]).addExpense(0, "internet", 90);
+  }
 });

@@ -178,64 +178,6 @@
         "type": "uint256"
       }
     ],
-    "name": "getGroup",
-    "outputs": [
-      {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "id",
-            "type": "uint256"
-          },
-          {
-            "internalType": "string",
-            "name": "name",
-            "type": "string"
-          },
-          {
-            "internalType": "string",
-            "name": "admin",
-            "type": "string"
-          },
-          {
-            "components": [
-              {
-                "internalType": "address",
-                "name": "friendAddress",
-                "type": "address"
-              },
-              {
-                "internalType": "string",
-                "name": "username",
-                "type": "string"
-              }
-            ],
-            "internalType": "struct Users.Friend[]",
-            "name": "members",
-            "type": "tuple[]"
-          },
-          {
-            "internalType": "uint256",
-            "name": "expenseCount",
-            "type": "uint256"
-          }
-        ],
-        "internalType": "struct Users.GroupView",
-        "name": "",
-        "type": "tuple"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "groupId",
-        "type": "uint256"
-      }
-    ],
     "name": "getGroupAdmin",
     "outputs": [
       {
@@ -331,6 +273,45 @@
             "internalType": "string",
             "name": "admin",
             "type": "string"
+          },
+          {
+            "components": [
+              {
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+              },
+              {
+                "components": [
+                  {
+                    "internalType": "address",
+                    "name": "friendAddress",
+                    "type": "address"
+                  },
+                  {
+                    "internalType": "string",
+                    "name": "username",
+                    "type": "string"
+                  }
+                ],
+                "internalType": "struct Users.Friend",
+                "name": "paidBy",
+                "type": "tuple"
+              },
+              {
+                "internalType": "string",
+                "name": "description",
+                "type": "string"
+              },
+              {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct Users.ExpenseView[]",
+            "name": "expenses",
+            "type": "tuple[]"
           },
           {
             "components": [

@@ -23,6 +23,13 @@ contract Users {
         uint amount;
     }
 
+    struct ExpenseView{
+        uint id;
+        Friend paidBy;
+        string description;
+        uint amount;
+    }
+
     struct Group {
         string name;
         address admin;
@@ -37,6 +44,7 @@ contract Users {
         uint id;
         string name;
         string admin;
+        ExpenseView[] expenses;
         Friend[] members;
         uint expenseCount;
     }
@@ -188,27 +196,24 @@ contract Users {
         return groupCount;
     }
 
-    function getGroup(uint groupId) public view returns (GroupView memory) {
-        Friend[] memory members = new Friend[](groups[groupId].members.length);
-        for (uint i = 0; i < groups[groupId].members.length; i++) {
-            members[i] = Friend({
-                friendAddress: groups[groupId].members[i],
-                username: users[groups[groupId].members[i]].username
-            });
-        }
-
-        return GroupView({
-            id: groupId,
-            name: groups[groupId].name,
-            admin: users[groups[groupId].admin].username,
-            members: members,
-            expenseCount: groups[groupId].expenseCount
-        });
-    }
-
     function getGroups() public view returns (GroupView[] memory) {
         GroupView[] memory allGroups = new GroupView[](users[msg.sender].groupIds.length);
         for (uint i = 0; i < users[msg.sender].groupIds.length; i++) {
+            ExpenseView[] memory expenses = new ExpenseView[](groups[users[msg.sender].groupIds[i]].expenseCount);
+            for (uint j = 0; j < groups[users[msg.sender].groupIds[i]].expenseCount; j++) {
+                Expense memory expense = groups[users[msg.sender].groupIds[i]].expenses[j];
+                expenses[j] = ExpenseView({
+                    id: j,
+                    description: expense.description,
+                    amount: expense.amount,
+                    paidBy: Friend({
+                        friendAddress: expense.paidBy,
+                        username: users[expense.paidBy].username
+                    })
+                });
+            }
+
+
             Friend[] memory members = new Friend[](groups[users[msg.sender].groupIds[i]].members.length);
             for (uint j = 0; j < groups[users[msg.sender].groupIds[i]].members.length; j++) {
                 members[j] = Friend({
@@ -220,6 +225,7 @@ contract Users {
             allGroups[i].id = users[msg.sender].groupIds[i];
             allGroups[i].name = groups[users[msg.sender].groupIds[i]].name;
             allGroups[i].admin = users[groups[users[msg.sender].groupIds[i]].admin].username;
+            allGroups[i].expenses = expenses;
             allGroups[i].members = members;
             allGroups[i].expenseCount = groups[users[msg.sender].groupIds[i]].expenseCount;
         }
