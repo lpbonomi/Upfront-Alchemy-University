@@ -27,13 +27,13 @@ function Avatar({
       case 6:
         return "text-sm";
       case 8:
-        return "text-sm";
+        return "text-base";
       case 12:
         return "text-lg";
       case 16:
         return "text-2xl";
       default:
-        return "text-md";
+        return "text-base";
     }
   }
 

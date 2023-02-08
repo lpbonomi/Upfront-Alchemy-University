@@ -28,13 +28,13 @@
         "type": "uint256"
       },
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "address",
-        "name": "member",
+        "name": "to",
         "type": "address"
       }
     ],
-    "name": "MemberInvited",
+    "name": "GroupInvite",
     "type": "event"
   },
   {

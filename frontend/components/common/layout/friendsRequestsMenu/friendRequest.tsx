@@ -47,12 +47,12 @@ function FriendRequest({ from }: { from: `0x${string}` }): ReactElement {
   });
 
   return (
-    <div className="pt-4 mb-12 pl-4">
-      <div className="float-left">
-        {username !== undefined && <Avatar username={username} size={8} />}
+    <div className="pt-4 mb-12 pl-2">
+      <div className="float-left mb-2">
+        {username !== undefined && <Avatar username={username} size={10} />}
       </div>
-      <div className="pl-2 mb-1 text-lg font-medium float-left">{username}</div>
-      <div className="float-right mr-3 pt-1">
+      <div className="pl-2 pt-1 text-lg font-medium float-left">{username}</div>
+      <div className="float-right mr-3 pt-2">
         <button
           onClick={() => deleteWrite?.()}
           className="h-6 w-6 mr-3 rounded-md border border-transparent bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"

@@ -56,7 +56,7 @@ contract Users {
     uint public groupCount = 0;
 
     event FriendRequest(address from, address indexed to);
-    event MemberInvited(uint groupId, address member);
+    event GroupInvite(uint groupId, address indexed to);
 
     modifier onlyRegisteredUser() {
         require(bytes(users[msg.sender].username).length > 0, "User not registered");
@@ -179,7 +179,7 @@ contract Users {
         require(groups[groupId].members.length < 5, "Total members cannot be more than 5");
 
         groups[groupId].isInvited[member] = true;
-        emit MemberInvited(groupId, member);
+        emit GroupInvite(groupId, member);
     }
 
     function acceptInvitation(uint groupId) external {
