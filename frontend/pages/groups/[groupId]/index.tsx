@@ -5,6 +5,7 @@ import { Members } from "@/components/groups/group/members";
 import { Heading } from "@/components/groups/group/heading";
 import { AddExpenseButton } from "@/components/groups/group/addExpenseButton";
 import { Expenses } from "@/components/groups/group/expenses";
+import { WhiteBackground } from "@/components/common/layout/whiteBackground";
 
 function GroupPage(): ReactElement {
   const router = useRouter();
@@ -15,16 +16,14 @@ function GroupPage(): ReactElement {
   return (
     <>
       {group !== undefined && (
-        <div className="h-full bg-white">
-          <div className="mx-auto max-w-7xl py-16 px-6 text-center lg:px-8 relative">
-            <div className="space-y-8 sm:space-y-12">
-              <AddExpenseButton groupId={groupId} />
-              <Heading name={group.name} />
-              <Members members={group.members} />
-              <Expenses expenses={group.expenses} />
-            </div>
-          </div>
-        </div>
+        <WhiteBackground>
+          <>
+            <AddExpenseButton groupId={groupId} />
+            <Heading name={group.name} />
+            <Members members={group.members} />
+            <Expenses expenses={group.expenses} />
+          </>
+        </WhiteBackground>
       )}
     </>
   );

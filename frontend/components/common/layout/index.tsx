@@ -3,10 +3,7 @@ import { Dialog, Transition } from "@headlessui/react";
 
 import {
   Bars3BottomLeftIcon,
-  CalendarIcon,
-  ChartBarIcon,
   HomeIcon,
-  InboxIcon,
   UserGroupIcon,
   UserIcon,
   XMarkIcon,
@@ -28,9 +25,6 @@ const navigation = [
   { name: "Dashboard", href: "/", icon: HomeIcon },
   { name: "Friends", href: "/friends", icon: UserIcon },
   { name: "Groups", href: "/groups", icon: UserGroupIcon },
-  { name: "Calendar", href: "#", icon: CalendarIcon },
-  { name: "Documents", href: "#", icon: InboxIcon },
-  { name: "Reports", href: "#", icon: ChartBarIcon },
 ];
 
 function Layout({ children }: { children: ReactElement }): ReactElement {
@@ -49,7 +43,7 @@ function Layout({ children }: { children: ReactElement }): ReactElement {
 
   return (
     <>
-      <div className="h-screen">
+      <div>
         <Transition.Root show={sidebarOpen} as={Fragment}>
           <Dialog
             as="div"
@@ -180,7 +174,7 @@ function Layout({ children }: { children: ReactElement }): ReactElement {
             </div>
           </div>
         </div>
-        <div className="h-full flex flex-1 flex-col md:pl-64">
+        <div className="flex flex-1 flex-col md:pl-64">
           <div className="sticky top-0 z-10 flex h-16 flex-shrink-0 bg-white shadow">
             <button
               type="button"
@@ -207,9 +201,9 @@ function Layout({ children }: { children: ReactElement }): ReactElement {
             </div>
           </div>
 
-          <main className="h-full">
-            <div className="h-full py-6">
-              <div className="h-full mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
+          <main>
+            <div className="py-6">
+              <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
                 {children}
               </div>
             </div>
