@@ -11,6 +11,11 @@ import ClientOnly from "@/components/common/clientOnly";
 function Overview(): ReactElement {
   const user = useUser();
 
+  const transactions = user?.groups.reduce(
+    (partialSum, group) => partialSum + group.expenses.length,
+    0
+  );
+
   return (
     <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
       <h2 className="text-lg font-medium leading-6 text-gray-900">Overview</h2>
@@ -22,11 +27,13 @@ function Overview(): ReactElement {
             amount={`${user?.balance?.toString() ?? "?"} eth`}
           />
         </ClientOnly>
-        <Card
-          title="Transactions made"
-          Icon={ArrowsRightLeftIcon}
-          amount="100+"
-        />
+        <ClientOnly>
+          <Card
+            title="Transactions made"
+            Icon={ArrowsRightLeftIcon}
+            amount={transactions?.toString() ?? "?"}
+          />
+        </ClientOnly>
         <ClientOnly>
           <Card
             title="Friends"
