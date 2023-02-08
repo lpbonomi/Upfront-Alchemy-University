@@ -8,7 +8,7 @@ function ModalForm(): ReactElement {
   const [groupName, setGroupName] = useState<Readonly<string>>("");
 
   const { config } = usePrepareContractWrite({
-    address: process.env.NEXT_PUBLIC_GROUPS_CONTRACT_ADDRESS,
+    address: process.env.NEXT_PUBLIC_USERS_CONTRACT_ADDRESS,
     abi: usersABI,
     functionName: "createGroup",
     args: [groupName],
