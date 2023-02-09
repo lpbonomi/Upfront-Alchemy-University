@@ -17,10 +17,6 @@ function NotificationsMenu(): ReactElement {
   const [openFriendRequests, setOpenFriendRequests] =
     useState<Readonly<boolean>>(hasFriendRequests);
 
-  console.log({ openFriendRequests });
-
-  console.log({ groupInvites });
-
   return (
     <Menu as="div" className="relative mx-3 inline-block text-left">
       <div>

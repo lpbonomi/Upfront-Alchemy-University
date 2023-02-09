@@ -26,8 +26,6 @@ function GroupInvite({ groupId }: { groupId: number }): ReactElement {
     args: [groupId],
   }) as { data: IFriend[]; isError: boolean; isLoading: boolean };
 
-  console.log({ members });
-
   const { config: acceptConfig } = usePrepareContractWrite({
     address: process.env.NEXT_PUBLIC_USERS_CONTRACT_ADDRESS,
     abi: usersABI,
