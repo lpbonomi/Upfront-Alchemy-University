@@ -17,7 +17,7 @@ function NotificationsMenu(): ReactElement {
   const [openFriendRequests, setOpenFriendRequests] =
     useState<Readonly<boolean>>(hasFriendRequests);
 
-  console.log({ hasFriendRequests, hasGroupInvites });
+  console.log({ openFriendRequests });
 
   return (
     <Menu as="div" className="relative mx-3 inline-block text-left">
@@ -25,7 +25,7 @@ function NotificationsMenu(): ReactElement {
         <Menu.Button className="flex max-w-xs items-center rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
           <span className="sr-only">Open Friend Requests</span>
 
-          <Bell notifications={friendRequests.length > 0} />
+          <Bell notifications={hasFriendRequests || hasGroupInvites} />
         </Menu.Button>
       </div>
       {(hasFriendRequests || hasGroupInvites) && (
