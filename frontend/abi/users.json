@@ -429,9 +429,9 @@
         "type": "uint256"
       },
       {
-        "internalType": "address",
+        "internalType": "string",
         "name": "member",
-        "type": "address"
+        "type": "string"
       }
     ],
     "name": "sendInvitation",

@@ -172,14 +172,17 @@ contract Users {
         groupCount++;
     }
 
-    function sendInvitation(uint groupId, address member) external {
+    function sendInvitation(uint groupId, string memory member) external {
         require(groups[groupId].admin == msg.sender, "Only admin can invite members");
-        require(groups[groupId].isInvited[member] == false, "Invitation already sent");
-        require(groups[groupId].isMember[member] == false, "Member already exists");
+        require(usernames[member] != address(0), "Member not registered");
+        User storage user = users[usernames[member]];
+        require(user.groupIds.length < 10, "Member cannot have more than 10 groups");
+        require(groups[groupId].isInvited[usernames[member]] == false, "Member already invited");
+        require(groups[groupId].isMember[usernames[member]] == false, "Member already added");
         require(groups[groupId].members.length < 5, "Total members cannot be more than 5");
 
-        groups[groupId].isInvited[member] = true;
-        emit GroupInvite(groupId, member);
+        groups[groupId].isInvited[usernames[member]] = true;
+        emit GroupInvite(groupId, usernames[member]);
     }
 
     function acceptGroupInvitation(uint groupId) external {

@@ -25,7 +25,6 @@ function ExpensesModalForm({ groupId }: { groupId: number }): ReactElement {
       setTransactionError("");
     },
   });
-  console.log({ groupId, description, amount });
 
   const { write } = useContractWrite({
     ...config,
@@ -45,7 +44,7 @@ function ExpensesModalForm({ groupId }: { groupId: number }): ReactElement {
 
   return (
     <>
-      {transactionError.length > 0 && (
+      {transactionError?.length > 0 && (
         <div className="text-red-500">{transactionError}</div>
       )}
       <form

@@ -12,7 +12,7 @@ function GroupPage(): ReactElement {
   const { groupId } = router.query as unknown as { groupId: number };
 
   const group = useGroups().find(
-    (group) => group.id.toString() === groupId.toString()
+    (group) => group.id.toString() === groupId?.toString()
   );
 
   return (
@@ -21,7 +21,7 @@ function GroupPage(): ReactElement {
         <WhiteBackground>
           <>
             <Heading name={group.name} />
-            <Members members={group.members} />
+            <Members groupId={groupId} members={group.members} />
             <Expenses groupId={groupId} expenses={group.expenses} />
           </>
         </WhiteBackground>

@@ -2,6 +2,29 @@ import "@nomicfoundation/hardhat-toolbox";
 import { task } from "hardhat/config";
 import ethers from "@nomiclabs/hardhat-ethers";
 
+const names = [
+  "Emma",
+  "Liam",
+  "Olivia",
+  "Noah",
+  "Ava",
+  "Isabella",
+  "Sophia",
+  "Mia",
+  "Charlotte",
+  "Amelia",
+  "Harper",
+  "Evelyn",
+  "Abigail",
+  "Emily",
+  "Elizabeth",
+  "Sofia",
+  "Avery",
+  "Ella",
+  "Scarlett",
+  "Grace",
+];
+
 task("populate", "Populate the contract with users").setAction(async () => {
   const Users = await hre.ethers.getContractFactory("Users");
   const users = await Users.deploy();
@@ -16,15 +39,15 @@ task("populate", "Populate the contract with users").setAction(async () => {
   console.log(signers[0].address);
 
   for (let i = 1; i <= 12; i++) {
-    await users.connect(signers[i]).createUser(String(i), {
+    await users.connect(signers[i]).createUser(names[i], {
       value: 10000,
     });
-    await users.sendFriendRequest(String(i));
+    await users.sendFriendRequest(names[i]);
     await users.connect(signers[i]).acceptFriendRequest(signers[0].address);
   }
 
   for (let i = 13; i <= 19; i++) {
-    await users.connect(signers[i]).createUser(String(i), {
+    await users.connect(signers[i]).createUser(names[i], {
       value: 10000,
     });
   }
@@ -34,7 +57,7 @@ task("populate", "Populate the contract with users").setAction(async () => {
   await users.createGroup("group1");
 
   for (let i = 1; i <= 4; i++) {
-    await users.sendInvitation(0, signers[i].address);
+    await users.sendInvitation(0, names[i]);
     await users.connect(signers[i]).acceptGroupInvitation(0);
   }
 
@@ -50,8 +73,8 @@ task("populate", "Populate the contract with users").setAction(async () => {
   await users.connect(signers[5]).createGroup("Vacations Group");
 
   for (let i = 6; i <= 8; i++) {
-    await users.connect(signers[5]).sendInvitation(1, signers[i].address);
+    await users.connect(signers[5]).sendInvitation(1, names[i]);
     await users.connect(signers[i]).acceptGroupInvitation(1);
   }
-  await users.connect(signers[5]).sendInvitation(1, signers[0].address);
+  await users.connect(signers[5]).sendInvitation(1, "johndoe");
 });

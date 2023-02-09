@@ -43,7 +43,7 @@ function WithdrawModalForm(): ReactElement {
 
   return (
     <>
-      {transactionError.length > 0 && (
+      {transactionError?.length > 0 && (
         <div className="text-red-500">{transactionError}</div>
       )}
       <form
