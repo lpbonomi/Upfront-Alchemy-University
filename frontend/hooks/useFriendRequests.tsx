@@ -10,10 +10,8 @@ import { useFriends } from "./useFriends";
 import usersABI from "@/abi/users.json";
 import { type address } from "@/types";
 
-function useFriendRequests(): Readonly<Array<{ from: address; to: address }>> {
-  const [friendRequests, setFriendRequests] = useState<
-    Readonly<Array<{ from: address; to: address }>>
-  >([]);
+function useFriendRequests(): Readonly<address[]> {
+  const [friendRequests, setFriendRequests] = useState<Readonly<address[]>>([]);
 
   const { chain } = useNetwork();
   const provider = useProvider({ chainId: chain?.id });
@@ -33,22 +31,13 @@ function useFriendRequests(): Readonly<Array<{ from: address; to: address }>> {
         address
       );
       const pastEvents = await contract.queryFilter(eventFilter);
-      const allFriendRequests = pastEvents.map((event: any) => ({
-        from: event.args.from,
-        to: event.args.to,
-      }));
+      const allFriendRequests = new Set<address>(
+        pastEvents.map((event: any) => event.args.from)
+      );
 
       contract.on(eventFilter, (_node, _label, owner) => {
-        setFriendRequests(() =>
-          [
-            ...allFriendRequests,
-            { from: owner.args.from, to: owner.args.to },
-          ].filter(
-            (friendRequest) =>
-              friends.find((friend) => friend.address === friendRequest.from) ==
-              null
-          )
-        );
+        allFriendRequests.add(owner.args.from);
+        setFriendRequests(() => Array.from(allFriendRequests));
       });
       return () => {
         contract.removeAllListeners();

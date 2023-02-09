@@ -10,6 +10,7 @@ function Welcome(): ReactElement {
   return (
     <div className="flex items-center">
       <ClientOnly>
+        <div className="w-16 hidden" />
         <Avatar username={user?.username ?? "?"} size={16} />
       </ClientOnly>
       <div>

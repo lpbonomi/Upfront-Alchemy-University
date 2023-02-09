@@ -8,12 +8,9 @@ import {
 } from "wagmi";
 import { useGroups } from "./useGroups";
 import usersABI from "@/abi/users.json";
-import { type address } from "@/types";
 
-function useGroupInvites(): Readonly<Array<{ groupId: number; to: address }>> {
-  const [groupInvites, setGroupInvites] = useState<
-    Readonly<Array<{ groupId: number; to: address }>>
-  >([]);
+function useGroupInvites(): Readonly<number[]> {
+  const [groupInvites, setGroupInvites] = useState<Readonly<number[]>>([]);
 
   const { chain } = useNetwork();
   const provider = useProvider({ chainId: chain?.id });
@@ -34,21 +31,13 @@ function useGroupInvites(): Readonly<Array<{ groupId: number; to: address }>> {
         address
       );
       const pastEvents = await contract.queryFilter(eventFilter);
-      const allGroupInvites = pastEvents.map((event: any) => ({
-        groupId: event.args.groupId,
-        to: event.args.to,
-      }));
+      const allGroupInvites = new Set<number>(
+        pastEvents.map((event: any) => Number(event.args.groupId.toString()))
+      );
 
       contract.on(eventFilter, (_node, _label, owner) => {
-        setGroupInvites(() =>
-          [
-            ...allGroupInvites,
-            { groupId: owner.args.groupId, to: owner.args.to },
-          ].filter(
-            (groupInvite) =>
-              groups.find((group) => group.id === groupInvite.groupId) == null
-          )
-        );
+        allGroupInvites.add(Number(owner.args.groupId.toString()));
+        setGroupInvites(() => Array.from(allGroupInvites));
       });
       return () => {
         contract.removeAllListeners();

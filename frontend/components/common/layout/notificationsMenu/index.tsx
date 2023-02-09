@@ -19,6 +19,8 @@ function NotificationsMenu(): ReactElement {
 
   console.log({ openFriendRequests });
 
+  console.log({ groupInvites });
+
   return (
     <Menu as="div" className="relative mx-3 inline-block text-left">
       <div>
@@ -46,25 +48,16 @@ function NotificationsMenu(): ReactElement {
             />
 
             {openFriendRequests &&
-              friendRequests.map((fr) => {
-                if (fr.from === undefined) {
-                  return null;
-                }
-                return (
-                  <Menu.Item key={fr.from}>
-                    {() => <FriendRequest from={fr.from} />}
-                  </Menu.Item>
-                );
-              })}
+              friendRequests.map((from) => (
+                <Menu.Item key={from}>
+                  {() => <FriendRequest from={from} />}
+                </Menu.Item>
+              ))}
             {!openFriendRequests &&
-              groupInvites.map((gi) => (
-                <>
-                  {gi.groupId !== undefined && (
-                    <Menu.Item key={gi.groupId}>
-                      {() => <GroupInvite groupId={gi.groupId} />}
-                    </Menu.Item>
-                  )}
-                </>
+              groupInvites.map((groupId) => (
+                <Menu.Item key={groupId}>
+                  {() => <GroupInvite groupId={groupId} />}
+                </Menu.Item>
               ))}
           </Menu.Items>
         </Transition>
