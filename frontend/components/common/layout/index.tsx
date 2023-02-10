@@ -1,4 +1,5 @@
 import { Fragment, type ReactElement, useState, useEffect } from "react";
+import { useAccount } from "wagmi";
 import { Dialog, Transition } from "@headlessui/react";
 
 import {
