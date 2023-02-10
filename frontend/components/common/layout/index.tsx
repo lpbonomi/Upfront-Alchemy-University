@@ -39,7 +39,7 @@ function Layout({ children }: { children: ReactElement }): ReactElement {
   const { address } = useAccount() as { address: address };
 
   useEffect(() => {
-    if (user === null && address !== null) {
+    if (user === null && address !== undefined) {
       setOpenRegisterModal(true);
     } else {
       setOpenRegisterModal(false);

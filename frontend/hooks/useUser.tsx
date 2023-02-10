@@ -13,6 +13,7 @@ function useUser(): Readonly<IUser> | null {
     address: process.env.NEXT_PUBLIC_USERS_CONTRACT_ADDRESS,
     abi: usersABI,
     functionName: "isRegistered",
+    enabled: address !== undefined,
     overrides: {
       from: address,
     },
@@ -22,6 +23,7 @@ function useUser(): Readonly<IUser> | null {
     address: process.env.NEXT_PUBLIC_USERS_CONTRACT_ADDRESS,
     abi: usersABI,
     functionName: "getUsername",
+    enabled: address !== undefined,
     overrides: {
       from: address,
     },
@@ -31,6 +33,7 @@ function useUser(): Readonly<IUser> | null {
     address: process.env.NEXT_PUBLIC_USERS_CONTRACT_ADDRESS,
     abi: usersABI,
     functionName: "getBalance",
+    enabled: address !== undefined,
     overrides: {
       from: address,
     },

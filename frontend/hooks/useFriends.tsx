@@ -3,15 +3,17 @@ import { useAccount, useContractRead } from "wagmi";
 import usersABI from "@/abi/users.json";
 
 import { type IFriend } from "@/types/friends/friend";
+import { type address } from "@/types";
 
 function useFriends(): Readonly<IFriend[]> {
+  const { address } = useAccount() as { address: address };
   const [friends, setFriends] = useState<Readonly<IFriend[]>>([]);
 
-  const { address } = useAccount();
   const { data, isLoading } = useContractRead({
     address: process.env.NEXT_PUBLIC_USERS_CONTRACT_ADDRESS,
     abi: usersABI,
     functionName: "getFriends",
+    enabled: address !== undefined,
     overrides: {
       from: address,
     },

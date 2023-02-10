@@ -1,11 +1,13 @@
 import { useState, type FormEvent, type ReactElement } from "react";
 
-import { useContractWrite, usePrepareContractWrite } from "wagmi";
+import { useContractWrite, usePrepareContractWrite, useAccount } from "wagmi";
 
 import Router from "next/router";
 import usersABI from "@/abi/users.json";
+import { type address } from "@/types";
 
 function WithdrawModalForm(): ReactElement {
+  const { address } = useAccount() as { address: address };
   const [transactionError, setTransactionError] =
     useState<Readonly<string>>("");
   const [amount, setAmount] = useState<Readonly<number>>(0);
@@ -15,7 +17,7 @@ function WithdrawModalForm(): ReactElement {
     abi: usersABI,
     functionName: "withdraw",
     args: [amount],
-    enabled: amount > 0,
+    enabled: amount > 0 && address !== undefined,
     onError(error: Error) {
       const e = error as unknown as { reason: string };
       setTransactionError(e.reason);

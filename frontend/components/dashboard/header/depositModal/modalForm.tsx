@@ -1,11 +1,13 @@
 import { useState, type FormEvent, type ReactElement } from "react";
 
-import { useContractWrite, usePrepareContractWrite } from "wagmi";
+import { useContractWrite, usePrepareContractWrite, useAccount } from "wagmi";
 
 import Router from "next/router";
 import usersABI from "@/abi/users.json";
+import { type address } from "@/types";
 
 function DepositModalForm(): ReactElement {
+  const { address } = useAccount() as { address: address };
   const [transactionError, setTransactionError] =
     useState<Readonly<string>>("");
   const [amount, setAmount] = useState<Readonly<number>>(0);
@@ -14,7 +16,7 @@ function DepositModalForm(): ReactElement {
     address: process.env.NEXT_PUBLIC_USERS_CONTRACT_ADDRESS,
     abi: usersABI,
     functionName: "deposit",
-    enabled: amount > 0,
+    enabled: amount > 0 && address !== undefined,
     overrides: {
       value: amount,
     },

@@ -7,11 +7,12 @@ import { type IGroup } from "@/types/groups/group";
 function useGroups(): Readonly<IGroup[]> {
   const [groups, setGroups] = useState<Readonly<IGroup[]>>([]);
 
-  const { address } = useAccount();
+  const { address } = useAccount() as { address: address };
   const { data, isLoading } = useContractRead({
     address: process.env.NEXT_PUBLIC_USERS_CONTRACT_ADDRESS,
     abi: usersABI,
     functionName: "getGroups",
+    enabled: address !== undefined,
     overrides: {
       from: address,
     },

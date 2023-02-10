@@ -1,11 +1,13 @@
 import { useState, type FormEvent, type ReactElement } from "react";
 
-import { useContractWrite, usePrepareContractWrite } from "wagmi";
+import { useContractWrite, usePrepareContractWrite, useAccount } from "wagmi";
 
 import Router from "next/router";
 import usersABI from "@/abi/users.json";
+import { type address } from "@/types";
 
 function MembersModalForm({ groupId }: { groupId: number }): ReactElement {
+  const { address } = useAccount() as { address: address };
   const [transactionError, setTransactionError] =
     useState<Readonly<string>>("");
   const [friend, setFriend] = useState<Readonly<string>>("");
@@ -15,7 +17,7 @@ function MembersModalForm({ groupId }: { groupId: number }): ReactElement {
     abi: usersABI,
     functionName: "sendInvitation",
     args: [groupId, friend],
-    enabled: friend !== "",
+    enabled: friend !== "" && address !== undefined,
     onError(error: Error) {
       const e = error as unknown as { reason: string };
       setTransactionError(e.reason);

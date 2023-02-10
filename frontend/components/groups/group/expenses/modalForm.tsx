@@ -1,11 +1,13 @@
 import { useState, type FormEvent, type ReactElement } from "react";
 
-import { useContractWrite, usePrepareContractWrite } from "wagmi";
+import { useContractWrite, usePrepareContractWrite, useAccount } from "wagmi";
 
 import Router from "next/router";
 import usersABI from "@/abi/users.json";
+import { type address } from "@/types";
 
 function ExpensesModalForm({ groupId }: { groupId: number }): ReactElement {
+  const { address } = useAccount() as { address: address };
   const [transactionError, setTransactionError] =
     useState<Readonly<string>>("");
   const [description, setDescription] = useState<Readonly<string>>("");
@@ -16,7 +18,7 @@ function ExpensesModalForm({ groupId }: { groupId: number }): ReactElement {
     abi: usersABI,
     functionName: "addExpense",
     args: [groupId, description, amount],
-    enabled: amount > 0,
+    enabled: amount > 0 && address !== undefined,
     onError(error: Error) {
       const e = error as unknown as { reason: string };
       setTransactionError(e.reason);
