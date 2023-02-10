@@ -6,7 +6,7 @@ import usersABI from "@/abi/users.json";
 import { type IUser } from "@/types/users/user";
 import { type address } from "@/types";
 
-function useUser(): Readonly<IUser> | null {
+function useUser(): Readonly<IUser> | false | null {
   const { address } = useAccount() as { address: address };
 
   const { data: isRegistered } = useContractRead({
@@ -23,7 +23,7 @@ function useUser(): Readonly<IUser> | null {
     address: process.env.NEXT_PUBLIC_USERS_CONTRACT_ADDRESS,
     abi: usersABI,
     functionName: "getUsername",
-    enabled: address !== undefined,
+    enabled: address !== undefined && isRegistered,
     overrides: {
       from: address,
     },
@@ -33,7 +33,7 @@ function useUser(): Readonly<IUser> | null {
     address: process.env.NEXT_PUBLIC_USERS_CONTRACT_ADDRESS,
     abi: usersABI,
     functionName: "getBalance",
-    enabled: address !== undefined,
+    enabled: address !== undefined && isRegistered,
     overrides: {
       from: address,
     },
@@ -42,8 +42,12 @@ function useUser(): Readonly<IUser> | null {
   const friends = useFriends();
   const groups = useGroups();
 
-  if (!isRegistered) {
+  if (address === undefined) {
     return null;
+  }
+
+  if (!isRegistered) {
+    return false;
   }
 
   return { address, username, balance, friends, groups };

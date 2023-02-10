@@ -11,6 +11,10 @@ import ClientOnly from "@/components/common/clientOnly";
 function Overview(): ReactElement {
   const user = useUser();
 
+  if (user === false) {
+    return <div>loading</div>;
+  }
+
   const transactions = user?.groups.reduce(
     (partialSum, group) => partialSum + group.expenses.length,
     0

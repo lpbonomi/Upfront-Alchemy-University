@@ -7,6 +7,10 @@ import ClientOnly from "@/components/common/clientOnly";
 function Welcome(): ReactElement {
   const user = useUser();
 
+  if (user === false) {
+    return <div>loading</div>;
+  }
+
   return (
     <div className="flex items-center">
       <ClientOnly>

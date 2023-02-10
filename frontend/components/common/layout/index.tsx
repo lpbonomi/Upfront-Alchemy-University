@@ -1,5 +1,4 @@
 import { Fragment, type ReactElement, useState, useEffect } from "react";
-import { useAccount } from "wagmi";
 import { Dialog, Transition } from "@headlessui/react";
 
 import {
@@ -17,7 +16,6 @@ import { RegisterModal } from "../register";
 import { NotificationsMenu } from "./notificationsMenu";
 import ClientOnly from "@/components/common/clientOnly";
 import { useUser } from "@/hooks/useUser";
-import { type address } from "@/types";
 
 function classNames(...classes: string[]): string {
   return classes.filter(Boolean).join(" ");
@@ -36,15 +34,14 @@ function Layout({ children }: { children: ReactElement }): ReactElement {
 
   const router = useRouter();
   const user = useUser();
-  const { address } = useAccount() as { address: address };
 
   useEffect(() => {
-    if (user === null && address !== undefined) {
+    if (user === false) {
       setOpenRegisterModal(true);
     } else {
       setOpenRegisterModal(false);
     }
-  }, [user, openRegisterModal, address]);
+  }, [user, openRegisterModal]);
 
   return (
     <>
@@ -195,7 +192,9 @@ function Layout({ children }: { children: ReactElement }): ReactElement {
               <div className="flex flex-1">
                 <h2 className="pt-4 text-md xs:text-lg font-bold leading text-black sm:truncate sm:text-2xl sm:tracking-tight">
                   {"Upfront Balance: "}
-                  <ClientOnly>{user?.balance?.toString() ?? "?"}</ClientOnly>
+                  <ClientOnly>
+                    {user !== false ? user?.balance?.toString() ?? "?" : "?"}
+                  </ClientOnly>
                   {" wei"}
                 </h2>
               </div>
