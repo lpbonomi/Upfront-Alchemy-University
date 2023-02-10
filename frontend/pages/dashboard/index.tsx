@@ -13,4 +13,4 @@ function Dashboard(): ReactElement {
   );
 }
 
-export { Dashboard };
+export default Dashboard;
