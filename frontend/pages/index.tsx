@@ -1,3 +1,3 @@
-import { Dashboard } from "./dashboard/index";
+import Dashboard from "./dashboard/index";
 
 export default Dashboard;
