@@ -16,6 +16,7 @@ import { RegisterModal } from "../register";
 import { NotificationsMenu } from "./notificationsMenu";
 import ClientOnly from "@/components/common/clientOnly";
 import { useUser } from "@/hooks/useUser";
+import { type address } from "@/types";
 
 function classNames(...classes: string[]): string {
   return classes.filter(Boolean).join(" ");
@@ -34,14 +35,15 @@ function Layout({ children }: { children: ReactElement }): ReactElement {
 
   const router = useRouter();
   const user = useUser();
+  const { address } = useAccount() as { address: address };
 
   useEffect(() => {
-    if (user === null) {
+    if (user === null && address !== null) {
       setOpenRegisterModal(true);
     } else {
       setOpenRegisterModal(false);
     }
-  }, [user, openRegisterModal]);
+  }, [user, openRegisterModal, address]);
 
   return (
     <>
