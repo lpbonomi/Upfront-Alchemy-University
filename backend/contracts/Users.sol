@@ -15,6 +15,7 @@ contract Users {
     struct Friend {
         address friendAddress;
         string username;
+        uint balance;
     }
 
     struct Expense{
@@ -103,12 +104,6 @@ contract Users {
         payable(msg.sender).transfer(amount);
     }
 
-    function transfer(address to, uint amount) external onlyRegisteredUser {
-        require(users[msg.sender].balance >= amount, "Insufficient funds");
-        users[msg.sender].balance -= amount;
-        users[to].balance += amount;
-    }
-
     function sendFriendRequest(string memory username) external onlyRegisteredUser {
         require(bytes(username).length > 0, "Username cannot be empty");
         require(keccak256(abi.encodePacked(username)) != keccak256(abi.encodePacked(users[msg.sender].username)), "Cannot add self as friend");
@@ -152,7 +147,7 @@ contract Users {
         for (uint i = 0; i < user.friendCount; i++) {
             addresses[i] = user.friends[i];
             friendsUsernames[i] = users[user.friends[i]].username;
-            friends[i] = Friend({friendAddress: addresses[i], username: friendsUsernames[i]});
+            friends[i] = Friend({friendAddress: addresses[i], username: friendsUsernames[i], balance: users[addresses[i]].balance});
         }
         return friends;
     }
@@ -201,10 +196,6 @@ contract Users {
         groups[groupId].isInvited[msg.sender] = false;
     }
 
-    function getGroupCount() public view returns (uint) {
-        return groupCount;
-    }
-
     function getGroups() public view returns (GroupView[] memory) {
         GroupView[] memory allGroups = new GroupView[](users[msg.sender].groupIds.length);
         for (uint i = 0; i < users[msg.sender].groupIds.length; i++) {
@@ -217,7 +208,8 @@ contract Users {
                     amount: expense.amount,
                     paidBy: Friend({
                         friendAddress: expense.paidBy,
-                        username: users[expense.paidBy].username
+                        username: users[expense.paidBy].username,
+                        balance: users[expense.paidBy].balance
                     })
                 });
             }
@@ -227,7 +219,8 @@ contract Users {
             for (uint j = 0; j < groups[users[msg.sender].groupIds[i]].members.length; j++) {
                 members[j] = Friend({
                     friendAddress: groups[users[msg.sender].groupIds[i]].members[j],
-                    username: users[groups[users[msg.sender].groupIds[i]].members[j]].username
+                    username: users[groups[users[msg.sender].groupIds[i]].members[j]].username,
+                    balance: users[groups[users[msg.sender].groupIds[i]].members[j]].balance
                 });
             }
 
@@ -245,16 +238,13 @@ contract Users {
         return groups[groupId].name;
     }
 
-    function getGroupAdmin(uint groupId) public view returns (address) {
-        return groups[groupId].admin;
-    }
-
     function getGroupMembers(uint groupId) public view returns (Friend[] memory) {
         Friend[] memory members = new Friend[](groups[groupId].members.length);
         for (uint i = 0; i < groups[groupId].members.length; i++) {
             members[i] = Friend({
                 friendAddress: groups[groupId].members[i],
-                username: users[groups[groupId].members[i]].username
+                username: users[groups[groupId].members[i]].username,
+                balance: users[groups[groupId].members[i]].balance
             });
         }
         return members;
@@ -281,7 +271,7 @@ contract Users {
             }
         }
 
-        users[msg.sender].balance -= amount - (amountPerMember * (groups[groupId].members.length - 1));
+        users[msg.sender].balance += (amountPerMember * (groups[groupId].members.length - 1));
 
         groups[groupId].expenseCount++;
     }

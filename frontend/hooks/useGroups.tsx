@@ -19,7 +19,16 @@ function useGroups(): Readonly<IGroup[]> {
 
   useEffect(() => {
     if (!isLoading) {
-      setGroups(data);
+      setGroups(
+        data.map((group) => ({
+          ...group,
+          id: Number(group.id.toString()),
+          members: group.members.map((member) => ({
+            ...member,
+            balance: Number(member.balance.toString()),
+          })),
+        }))
+      );
     }
   }, [isLoading, data]);
 

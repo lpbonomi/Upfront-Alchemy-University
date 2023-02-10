@@ -19,7 +19,12 @@ function useFriends(): Readonly<IFriend[]> {
 
   useEffect(() => {
     if (!isLoading) {
-      setFriends(data);
+      setFriends(
+        data.map((friend) => ({
+          ...friend,
+          balance: Number(friend.balance.toString()),
+        }))
+      );
     }
   }, [isLoading, data]);
 

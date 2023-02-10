@@ -173,43 +173,16 @@
             "internalType": "string",
             "name": "username",
             "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "balance",
+            "type": "uint256"
           }
         ],
         "internalType": "struct Users.Friend[]",
         "name": "",
         "type": "tuple[]"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "groupId",
-        "type": "uint256"
-      }
-    ],
-    "name": "getGroupAdmin",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "getGroupCount",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -249,6 +222,11 @@
             "internalType": "string",
             "name": "username",
             "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "balance",
+            "type": "uint256"
           }
         ],
         "internalType": "struct Users.Friend[]",
@@ -317,6 +295,11 @@
                     "internalType": "string",
                     "name": "username",
                     "type": "string"
+                  },
+                  {
+                    "internalType": "uint256",
+                    "name": "balance",
+                    "type": "uint256"
                   }
                 ],
                 "internalType": "struct Users.Friend",
@@ -349,6 +332,11 @@
                 "internalType": "string",
                 "name": "username",
                 "type": "string"
+              },
+              {
+                "internalType": "uint256",
+                "name": "balance",
+                "type": "uint256"
               }
             ],
             "internalType": "struct Users.Friend[]",
@@ -435,24 +423,6 @@
       }
     ],
     "name": "sendInvitation",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "to",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "transfer",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

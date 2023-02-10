@@ -24,7 +24,7 @@ function Overview(): ReactElement {
           <Card
             title="Account balance"
             Icon={ScaleIcon}
-            amount={`${user?.balance?.toString() ?? "?"} eth`}
+            amount={`${user?.balance?.toString() ?? "?"} wei`}
           />
         </ClientOnly>
         <ClientOnly>
