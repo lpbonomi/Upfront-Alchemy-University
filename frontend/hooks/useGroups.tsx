@@ -3,6 +3,7 @@ import { useAccount, useContractRead } from "wagmi";
 import usersABI from "@/abi/users.json";
 
 import { type IGroup } from "@/types/groups/group";
+import { type address } from "@/types";
 
 function useGroups(): Readonly<IGroup[]> {
   const [groups, setGroups] = useState<Readonly<IGroup[]>>([]);
