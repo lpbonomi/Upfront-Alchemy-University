@@ -32,7 +32,7 @@ function useGroupInvites(): Readonly<number[]> {
       );
       const pastEvents = await contract.queryFilter(eventFilter);
       const allGroupInvites = new Set<number>(
-        pastEvents.map((event: any) => Number(event.args.groupId.toString()))
+        pastEvents?.map((event: any) => Number(event.args.groupId.toString()))
       );
 
       contract.on(eventFilter, (_node, _label, owner) => {

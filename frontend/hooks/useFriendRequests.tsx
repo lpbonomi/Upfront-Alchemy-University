@@ -32,7 +32,7 @@ function useFriendRequests(): Readonly<address[]> {
       );
       const pastEvents = await contract.queryFilter(eventFilter);
       const allFriendRequests = new Set<address>(
-        pastEvents.map((event: any) => event.args.from)
+        pastEvents?.map((event: any) => event.args.from)
       );
 
       contract.on(eventFilter, (_node, _label, owner) => {

@@ -20,7 +20,7 @@ function useFriends(): Readonly<IFriend[]> {
   useEffect(() => {
     if (!isLoading) {
       setFriends(
-        data.map((friend) => ({
+        data?.map((friend) => ({
           ...friend,
           balance: Number(friend.balance.toString()),
         }))

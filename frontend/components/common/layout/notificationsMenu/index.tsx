@@ -44,13 +44,13 @@ function NotificationsMenu(): ReactElement {
             />
 
             {openFriendRequests &&
-              friendRequests.map((from) => (
+              friendRequests?.map((from) => (
                 <Menu.Item key={from}>
                   {() => <FriendRequest from={from} />}
                 </Menu.Item>
               ))}
             {!openFriendRequests &&
-              groupInvites.map((groupId) => (
+              groupInvites?.map((groupId) => (
                 <Menu.Item key={groupId}>
                   {() => <GroupInvite groupId={groupId} />}
                 </Menu.Item>

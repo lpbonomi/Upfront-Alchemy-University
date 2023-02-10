@@ -5,7 +5,7 @@ import { Avatar } from "@/components/common/avatar/avatar";
 function TableBody({ expenses }: { expenses: IExpense[] }): ReactElement {
   return (
     <tbody className="bg-white">
-      {expenses.map((e, index) => (
+      {expenses?.map((e, index) => (
         <tr key={index} className={index % 2 === 0 ? undefined : "bg-gray-50"}>
           <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
             <div className="flex items-center">

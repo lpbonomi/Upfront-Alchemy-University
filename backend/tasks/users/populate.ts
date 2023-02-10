@@ -24,6 +24,24 @@ const names = [
   "Scarlett",
   "Grace",
 ];
+const expenses = [
+  { name: "water", amount: 100 },
+  { name: "gas", amount: 345 },
+  { name: "electricity", amount: 253 },
+  { name: "internet", amount: 90 },
+  { name: "food", amount: 210 },
+  { name: "rent", amount: 550 },
+  { name: "insurance", amount: 120 },
+  { name: "phone", amount: 50 },
+  { name: "transport", amount: 210 },
+  { name: "clothes", amount: 104 },
+  { name: "toys", amount: 123 },
+  { name: "games", amount: 141 },
+  { name: "books", amount: 101 },
+  { name: "movies", amount: 120 },
+  { name: "music", amount: 50 },
+  { name: "gifts", amount: 100 },
+];
 
 task("populate", "Populate the contract with users").setAction(async () => {
   const Users = await hre.ethers.getContractFactory("Users");
@@ -63,11 +81,20 @@ task("populate", "Populate the contract with users").setAction(async () => {
 
   console.log("Groups created!");
 
-  for (let i = 1; i <= 4; i++) {
-    await users.connect(signers[i]).addExpense(0, "water", 100);
-    await users.connect(signers[i]).addExpense(0, "gas", 345);
-    await users.connect(signers[i]).addExpense(0, "electricity", 253);
-    await users.connect(signers[i]).addExpense(0, "internet", 90);
+  // for (let i = 1; i <= 4; i++) {
+  //   await users.connect(signers[i]).addExpense(0, "water", 100);
+  //   await users.connect(signers[i]).addExpense(0, "gas", 345);
+  //   await users.connect(signers[i]).addExpense(0, "electricity", 253);
+  //   await users.connect(signers[i]).addExpense(0, "internet", 90);
+  // }
+
+  for (const [i, expense] of expenses.entries()) {
+    // await users.connect(signers[ran]).addExpense(0, expense.name, expense.amount);
+    // get random number between 1 and 4
+    const ran = Math.floor(Math.random() * 4) + 1;
+    await users
+      .connect(signers[ran])
+      .addExpense(0, expense.name, expense.amount);
   }
 
   await users.connect(signers[5]).createGroup("Vacations Group");
